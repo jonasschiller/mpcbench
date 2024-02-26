@@ -1,0 +1,79 @@
+repo: https://github.com/jonasschiller/sevarebenchmpyc.git
+# changing the repo_paths requires changing them in pos_helper.sh too
+repo_dir: /root/sevarebenchmpyc
+repoupload: git@github.com:jonasschiller/sevaremeasurements.git
+
+#######
+## Networking environment definitions
+#######
+
+### using yaml anchor-alias to define switch topology
+## testbedCoinbase NIC configuration
+bitcoinNIC0: &NICtestbedC eno5
+bitcoincashNIC0: *NICtestbedC
+bitcoingoldNIC0: *NICtestbedC
+
+etherNIC0: *NICtestbedC
+ethercashNIC0: *NICtestbedC
+ethergoldNIC0: *NICtestbedC
+
+dogecoinNIC0: *NICtestbedC
+dogecoincashNIC0: *NICtestbedC
+dogecoingoldNIC0: *NICtestbedC
+
+### direct connection topology, clockwise circularly sorted
+## testbedKaunas NIC configuration
+raplaNIC0: enp133s0f1
+tapaNIC1: enp133s0f1
+tapaNIC0: enp130s0f0
+valgaNIC1: ens5f1
+valgaNIC0: ens5f0
+raplaNIC1: enp130s0f0
+
+## testbedCoinbase NIC configuration
+# 25G
+# Intel Nodes
+# NEW TOPOLOGY
+idexNIC0: ens2f1
+idexNIC1: ens4f1
+idexNIC2: ens4f0
+meldNIC0: ens4f0
+meldNIC1: ens2f1
+meldNIC2: ens4f1
+tinymanNIC0: ens4f0
+tinymanNIC1: ens4f1
+tinymanNIC2: ens4f1
+yieldlyNIC0: ens2f1
+yieldlyNIC1: ens4f0
+yieldlyNIC2: ens2f1
+
+# 25G
+##gardNIC0: enp194s0f0
+##goracleNIC1: enp194s0f0
+##goracleNIC0: enp193s0f1
+##zoneNIC1: enp193s0f1
+##zoneNIC0: enp194s0f0
+##gardNIC1: enp194s0f1
+
+# 100G temporary indirect with gard as center node
+gardNIC0: enp129s0f0
+goracleNIC0: enp129s0f0
+#goracleNIC1: enp129s0f0
+#zoneNIC1: enp129s0f0
+zoneNIC0: enp129s0f0np0
+gardNIC1: enp129s0f1
+
+## testbedSpringfield NIC configuration
+bartNIC0: enp4s0
+homerNIC1: enp4s0
+homerNIC0: enp3s0
+margeNIC1: enp6s0
+margeNIC0: enp4s0
+bartNIC1: enp5s0
+
+nedNIC0: &NIC1 eno8
+rodNIC1: &NIC0 eno7
+rodNIC0: *NIC1
+toddNIC1: *NIC1
+toddNIC0: *NIC0
+nedNIC1: *NIC0
