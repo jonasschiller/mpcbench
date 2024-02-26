@@ -1,3 +1,7 @@
+#This script performs a speed test after the network connections have been setup to test the real throughput of the network.
+# It does not need to be adapted for the integration of a new framework
+
+
 #!/bin/bash
 
 # install tool

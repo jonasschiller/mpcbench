@@ -1,3 +1,7 @@
+#This script defines the variables for the network setup and required sofware
+#The repos need to be changed to the framework and the specific version of sevarebench
+#The networking environment data is specific to the TUM testbed
+
 repo: https://github.com/jonasschiller/sevarebenchmpyc.git
 # changing the repo_paths requires changing them in pos_helper.sh too
 repo_dir: /root/sevarebenchmpyc
