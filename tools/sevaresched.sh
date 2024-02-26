@@ -1,3 +1,7 @@
+# This script supports the sequential run of multiple config files
+# It checks every 10 Minutes if <configfile> experiment can be run next and runs it
+# It does not need to be adapted for the integration of a new framework
+
 #!/bin/bash
 if [ "${#@}" -ne 3 ]; then
     echo "Checks every 10 Minutes if <configfile> experiment can be run next and runs it"
