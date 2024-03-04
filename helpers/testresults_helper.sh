@@ -1,7 +1,13 @@
 #!/bin/bash
 # shellcheck disable=SC2154,2034
+###
+# This script gets executed in case an error occured or the experiments are finished
+# It exports the experiment results to a csv file and pushes them to the measurement data git
+# It also adds the speedtest and pingtest results to the summary file
+# While the output of the /bin/time measurements are framework independent, the frameworks internal statistics are not
+# To extract those, the result parsing has to be adapted to the output format of the specific framework
+###
 
-# where we find the experiment results
 resultpath="$RPATH/${NODES[0]}/"
 
 ############

@@ -1,8 +1,15 @@
 #!/bin/bash
 
+#This script provides the functions required for the manipulation of network and system parameters.
+# It is called by the measurement.sh script.
+# It provides functionality to adapt cpu-frequency, cores and RAM size as well as bandwidth, latency and packet loss.
+# Some combinations of these parameters are also supported.
+# It does not need to be adapted for the integration of a new framework
+
+
 # exit on error
 set -e
-
+# Limits the amount of available CPUs
 limitCPUs() {
 
     cpus=$(pos_get_variable cpus --from-loop)
@@ -19,6 +26,7 @@ limitCPUs() {
     return 0
 }
 
+# Limits the size of the RAM
 limitRAM() {
 
     # only manipulate ram if there was a swapfile created
@@ -31,6 +39,7 @@ limitRAM() {
     return 0
 }
 
+# Sets the CPU quota available to the experiment process
 setQuota() {
 
     # set up dynamic cgroup via systemd
@@ -39,6 +48,7 @@ setQuota() {
     return 0
 }
 
+# limits the bandwidth of all connections
 limitBandwidth() {
 
     bandwidth=$(pos_get_variable bandwidths --from-loop)
@@ -50,6 +60,7 @@ limitBandwidth() {
     return 0
 }
 
+# sets latency, packet loss and bandwidth
 setAllParameters() {
     latency=$(pos_get_variable latencies --from-loop)
     bandwidth=$(pos_get_variable bandwidths --from-loop)
@@ -63,7 +74,7 @@ setAllParameters() {
 [ "$NIC1" != 0 ] && tc qdisc add dev "$NIC1" root netem rate "$bandwidth"mbit loss "$packetdrop"% delay "$latency"ms
 return 0
 }
-
+# Sets only the latency for all connections
 setLatency() {
 
     latency=$(pos_get_variable latencies --from-loop)
@@ -74,6 +85,7 @@ setLatency() {
     return 0
 }
 
+#Sets the packet loss for outgoing network drivers
 setPacketdrop() {
 
     packetdrop=$(pos_get_variable packetdrops --from-loop)
@@ -86,6 +98,7 @@ setPacketdrop() {
     return 0
 }
 
+# Sets the cpu frequency
 setFrequency() {
 
     # manipulate frequency last
@@ -95,6 +108,7 @@ setFrequency() {
     return 0
 }
 
+# Set Latency and Bandwidth 
 setLatencyBandwidth() {
 
     latency=$(pos_get_variable latencies --from-loop)
@@ -110,6 +124,7 @@ setLatencyBandwidth() {
     return 0
 }
 
+# Sets only bandwidth and packetdrop
 setBandwidthPacketdrop() {
     bandwidth=$(pos_get_variable bandwidths --from-loop)
     packetdrop=$(pos_get_variable packetdrops --from-loop)
@@ -126,6 +141,7 @@ setBandwidthPacketdrop() {
     return 0
 }
 
+# sets packetdrop and latency
 setPacketdropLatency() {
     packetdrop=$(pos_get_variable packetdrops --from-loop)
     latency=$(pos_get_variable latencies --from-loop)
@@ -143,7 +159,7 @@ setPacketdropLatency() {
 ############
 ##  RESET
 ############
-
+# resetting the previously set parameters for each experiment
 resetFrequency() {
 
     # reset frequency first

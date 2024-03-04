@@ -1,6 +1,14 @@
 #!/bin/bash
 
-# Experiment setup-script to be run locally on experiment server
+# This script performs the basic setup of the experiment server and its network connections
+# Furthermore it performs a speed test of each connection and stores the result for future output.
+# It does not need to be adapted for the integration of a new framework
+# The first step is the identification of the nodes and the associated topology.
+# Then the network drivers and ip adresses are set to match the corresponding node.
+# For the faster intel nodes, a specific network driver is installed allowing for bandwidths up to 25 GBit/s
+# Finally the speed test is performed.
+# If desired, this script also sets up the required settings to measure the amount of RAM page swaps.
+
 
 # exit on error
 set -e

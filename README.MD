@@ -93,10 +93,13 @@ and F9. This activates the trap that launches the verification and exporting of 
 ### Add new experiment
 
 
+Adding a new experiment depends on the  framework as some frameworks require experiments to be present during framework compilation while others allow for separate compilation.
+The easiest way of adding an experiment is through storing the code in this repository in the experiment section and then copying the code to the required place once the server is setup either before or after framework installation
 
 
+### Add new testbed nodes
 
-### Add new testbed hosts
+New servers can simply be added through adding their network information in the global-variables.yml file together with their network topology.
 
 #### Switch topology
 

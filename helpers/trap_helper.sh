@@ -6,6 +6,8 @@
 # with the help of a trap. It shall restore the state
 # of the system from before the framework was started.
 # It also verifies and exports measurement results
+# This is framework independent and those not need to be adapted
+# It allows for automatic finalization of the benchmarks and easy over night execution.
 
 cleanup() {
 

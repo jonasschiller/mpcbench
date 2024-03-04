@@ -1,6 +1,15 @@
 #!/bin/bash
 # shellcheck disable=SC2034,2154
 
+###
+# This script handles the parameter read in of the benchmarking tool
+# As parameters vary between the different frameworks, this is somewhat framework dependent.
+# Most provided paramaters are however framework independent, such as the input size, the network and system parameter and certain output options.
+# It can easily be updated to read in additional parameters
+# Additionally it provides functionality to read in a config style 
+#instead of providing command line parameters and even entire config folder.
+
+
 usage() {
     styleCyan "$0: $1"
     echo

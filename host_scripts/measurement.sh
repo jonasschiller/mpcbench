@@ -1,7 +1,9 @@
 #!/bin/bash
 # shellcheck disable=SC1091,2154
 
-#
+# This script calls the network and system manipulation functions and, if necessary, compiles the MPC eperiment.
+# It is highly dependend on the execution format of the framework  
+# The network and system manipulation phase however is framework independent and can be reused for other frameworks.
 # Script is run locally on experiment server.
 #
 
@@ -9,11 +11,14 @@
 set -e
 # log every command
 set -x
-
+#####
+# Framework independent
 REPO_DIR=$(pos_get_variable repo_dir --from-global)
 timerf="%M (Maximum resident set size in kbytes)\n%e (Elapsed wall clock time in seconds)\n%P (Percent of CPU this job got)\n%S (System time in seconds)"
 size=$(pos_get_variable input_size --from-loop)
+### add custom aprameters
 param2=$(pos_get_variable param2 --from-loop) || param2=""
+###
 EXPERIMENT=$1
 player=$2
 environ=""
@@ -26,10 +31,6 @@ etype=$6
 # default to etype 1 if unset
 etype=${etype:-1}
 
-cd "$REPO_DIR"/experiments/"$EXPERIMENT" || exit
-
-## Implement verification run so it can be benchmarked on the same parameters
-## This will also enable the verify results function
 
 ####
 #  environment manipulation section start
@@ -79,7 +80,9 @@ esac
 ####
 #  environment manipulation section stop
 ####
-
+###
+# Framework dependent experiment compilation and execution
+###
 log=testresults
 touch "$log"
 
@@ -115,7 +118,8 @@ $success
 pos_sync
 
 
-
+###
+# Framework indepentend part
 ####
 #  environment manipulation reset section start
 ####

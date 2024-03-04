@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# This script orchestrates the execution of the different scripts and benchmarking steps
+# Additionally, it provides logging functionality with different progress messages as well as a progress bar for the execution of the experiments
+# It is framework independent and does generally not need to be adjusted, except is special parameters are required
+# for experiment execution or framework installation
+
 initializePOS() {
 
 echo "  freeing host(s) ${NODES[*]}"

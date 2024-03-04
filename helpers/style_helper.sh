@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# This just provides different colors that help with output styling.
 #Output styling
 Green='\033[0;32m'
 Red='\033[0;31m'
