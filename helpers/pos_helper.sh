@@ -42,6 +42,10 @@ for node in "${NODES[@]}"; do
 	# default variables file for all experiments
 	{ "$POS" alloc set_var "$node" global-variables.yml --as-global;
 	"$POS" alloc set_var "$node" "experiments/run-variables.yml" --as-global;
+	if [ $FRAMEWORK="mp-spdz" ]; then
+		# special variables for experiment run
+		"$POS" alloc set_var "$node" experiments/"$EXPERIMENT"/parameters.yml --as-global;
+	fi
 	# default variables file for concrete experiment"
 	# loop variables for experiment script (append random num to mitigate conflicts)
 	loopvarpath="experiments/loop-variables-$NETWORK.yml"
