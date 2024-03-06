@@ -113,7 +113,7 @@ setParameters() {
     # define the flags for the parameters
     # ':' means that the flag expects an argument.
     SHORT=n:,e:,i:,m:,c:,q:,f:,r:,l:,b:,d:,x,h
-    LONG=nodes:,protocols:,dtype:,preproc:,maldishonest,codishonest,semidishonest,malhonest,semihonest,field,ring,binary,all,experiment:,etype:,compflags:,progflags:,runflags:,input:,input2:,config:,measureram:,cpu:,cpuquota:,freq:,latency:,bandwidth:,packetdrop:,help 
+    LONG=nodes:,protocols:,framework:,dtype:,preproc:,maldishonest,codishonest,semidishonest,malhonest,semihonest,field,ring,binary,all,experiment:,etype:,compflags:,progflags:,runflags:,input:,input2:,config:,measureram:,cpu:,cpuquota:,freq:,latency:,bandwidth:,packetdrop:,help 
     LONG+=,split:,packbool:,optshare:,ssl:,threads:,manipulate:,function:
     LONG+=,txbuffer:,rxbuffer:,verifybuffer:
     PARSED=$(getopt --options ${SHORT} \
