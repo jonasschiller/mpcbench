@@ -96,5 +96,5 @@ maxjobs=$(( maxcoresram < maxcorescpu ? maxcoresram : maxcorescpu ))
 make -j "$maxjobs" all
 make install
 cd /root
-chmod 777 /root/sevarebenchmotion /root/MOTION -R
+chmod 777 /root/sevarebenchabstract /root/MOTION -R
 echo "global setup successful"
