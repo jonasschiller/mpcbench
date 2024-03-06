@@ -31,7 +31,6 @@ cleanup() {
 
     echo "exporting measurement results..."
     # create and push Result Plots  
-    source "root/sevarebenchabstract/helpers/${FRAMEWORK}/testresults_helper.sh"  
     exportExperimentResults
   else
     rm -rf "$EXPORTPATH" &> /dev/null
