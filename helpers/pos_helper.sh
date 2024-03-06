@@ -90,6 +90,10 @@ runExperiment() {
 	player=0
 	path=/root/sevarebenchabstract/host_scripts/"$FRAMEWORK"
 	script="$path"/measurement.sh
+	if [ "$FRAMEWORK" == "mp-spdz" ]; then
+		cdomain=$1
+		declare -n cdProtocols="${cdomain}PROTOCOLS"
+	fi
 	for node in "${NODES[@]}"; do
 		echo "    execute experiment on host $node..."
 		if [ "$FRAMEWORK" == "hpmpc" ]; then
@@ -100,7 +104,7 @@ runExperiment() {
 			PIDS+=( $! )
 		elif [ "$FRAMEWORK" == "mp-spdz" ]; then
 			"$POS" comm laun --blocking "$node" -- /bin/bash "$path"/experiment-reset.sh
-			"$POS" comm laun --blocking --loop "$node" -- /bin/bash "$script" "$player" "$cdomain" "${Protocols[*]}" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" &
+			"$POS" comm laun --blocking --loop "$node" -- /bin/bash "$script" "$player" "$cdomain" "${cdProtocols[*]}" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" &
 			PIDS+=( $! )
 		elif [ "$FRAMEWORK" == "motion" ]; then
 			"$POS" comm laun --blocking --loop "$node" -- /bin/bash "$script" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" &

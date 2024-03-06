@@ -41,10 +41,26 @@ RUNSTATUS="${Orange}incomplete${Stop}"
 
 source helpers/"$FRAMEWORK"/testresults_helper.sh
 
+if [ "$FRAMEWORK" == "mp-spdz" ]; then
+    for cdomain in "${CDOMAINS[@]}"; do
 
-echo "running experiment on hosts..."
-PIDS=()
-runExperiment 
+    echo "running experiment on hosts... (CDomain $cdomain)"
+    PIDS=()
+    runExperiment "$cdomain"
+
+    sleep 2 && echo " ...waiting for experiment"
+    for pid in "${PIDS[@]}"; do
+        # and error on the testnodes can be caught here
+        wait "$pid" || getlastoutput
+    done
+    echo "  done with CDomain $cdomain"
+    done
+else
+    echo "running experiment on hosts..."
+    PIDS=()
+    runExperiment 
+fi
+
 
 sleep 2 && echo " ...waiting for experiment"
 for pid in "${PIDS[@]}"; do
