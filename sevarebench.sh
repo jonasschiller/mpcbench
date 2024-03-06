@@ -7,6 +7,7 @@
 source helpers/style_helper.sh
 source helpers/parameters.sh
 source helpers/trap_helper.sh
+source host_scripts/mp-spdz/protocols.sh
 source helpers/pos_helper.sh
 
 #checks whether the provided number of arguments is zero and prints help message listing parameters
