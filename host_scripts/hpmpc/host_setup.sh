@@ -62,7 +62,6 @@ git clone "$REPO2" "$REPO2_DIR"
 
 cd "$REPO2_DIR"
 # git checkout fix
-git checkout NN
 cd ..
 
 # load custom htop config
