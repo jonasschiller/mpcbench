@@ -45,6 +45,10 @@ for node in "${NODES[@]}"; do
 	if [ "$FRAMEWORK" == "mp-spdz" ]; then
 		# special variables for experiment run
 		"$POS" alloc set_var "$node" experiments/"$FRAMEWORK"/"$EXPERIMENT"/parameters.yml --as-global;
+	elif [ "$FRAMEWORK" == "hpmpc" ]; then
+		# default variables file for concrete experiment
+		experimentvarpath="variables/experiment-variables-$NETWORK.yml"
+		"$POS" alloc set_var "$node" "$experimentvarpath" --as-global;
 	fi
 	# default variables file for concrete experiment"
 	# loop variables for experiment script (append random num to mitigate conflicts)
