@@ -78,13 +78,23 @@ runExperiment() {
 	player=0
 	path=/root/sevarebenchabstract/host_scripts/"$FRAMEWORK"/
 	script="$path"/measurement.sh
-		
 	for node in "${NODES[@]}"; do
 		echo "    execute experiment on host $node..."
-		{ 		"$POS" comm laun --blocking --loop "$node" -- \
+		if [ "$FRAMEWORK" == "hpmpc" ]; then
+		
+		elif [ "$FRAMEWORK" == "mpyc" ]; then
+			{ 		"$POS" comm laun --blocking --loop "$node" -- \
 				/bin/bash "$script" "$EXPERIMENT" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" "$FRAMEWORK";
 		} &
 		PIDS+=( $! )
+		elif [ "$FRAMEWORK" == "mp-spdz" ]; then
+			{	"$POS" comm laun --blocking --loop "$node" -- \
+			/bin/bash "$script" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE";
+		} &
+		PIDS+=( $! )
+		elif [ "$FRAMEWORK" == "motion" ]; then
+
+		fi
 		((++player))
 	done
 }
