@@ -35,8 +35,7 @@ checkConnection() {
 checkConnection "mirror.lrz.de"
 apt update
 # Install dependencies
-apt install -y git m4 python3 texinfo yasm linux-cpupower \
-    python3-pip time parted libomp-dev htop
+apt-get install -y git m4 python3 texinfo yasm linux-cpupower ython3-pip time parted libomp-dev htop
 # install the framework
 pip3 install -U numpy
 pip3 install -U gmpy2
