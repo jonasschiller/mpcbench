@@ -37,7 +37,7 @@ apt update
 apt install -y automake build-essential cmake git libboost-dev libboost-thread-dev \
     libntl-dev libsodium-dev libssl-dev libtool m4 texinfo yasm \
     python3-pip time parted libomp-dev htop wget gnupg software-properties-common \
-    lsb-release 
+    lsb-release iperf3
 pip3 install -U numpy
 checkConnection "github.com"
 echo 'deb http://deb.debian.org/debian testing main' > /etc/apt/sources.list.d/testing.list

@@ -46,7 +46,7 @@ checkConnection "mirror.lrz.de"
 apt update
 apt install -y automake git libboost-dev libboost-thread-dev \
     libntl-dev libgmp-dev libsodium-dev libssl-dev libtool m4 python3 texinfo yasm \
-    python3-pip time parted software-properties-common
+    python3-pip time parted software-properties-common iperf3
 pip3 install -U numpy torch
 checkConnection "github.com"
 git clone "$REPO2" "$REPO2_DIR"
