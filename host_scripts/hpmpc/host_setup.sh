@@ -36,7 +36,7 @@ export DEBIAN_FRONTEND=noninteractive
 apt update
 apt install -y automake build-essential git libboost-dev libboost-thread-dev parted \
     libntl-dev libsodium-dev libssl-dev libtool m4 python3 texinfo yasm linux-cpupower \
-    python3-pip time software-properties-common
+    python3-pip time software-properties-common 
 # wget https://apt.llvm.org/llvm.sh
 # chmod +x llvm.sh
 # ./llvm.sh -y 15
