@@ -455,8 +455,6 @@ setParameters() {
     elif [ "FRAMEWORK" = "hpmpc" ]; then
         # set experiment wide variables (append random num to mitigate conflicts)
         # if value may contain a leading 0 (zero), add any char before (like manipulate)
-        experimentvarpath="variables/experiment-variables-$NETWORK.yml"
-        echo "manipulate: m$manipulate" > "$experimentvarpath"
         # Config Vars
         configvars=( OPTSHARE PACKBOOL SPLITROLES PROTOCOL PREPROCESS DATATYPE )
         configvars+=( SSL THREADS FUNCTION TXBUFFER RXBUFFER VERIFYBUFFER)
