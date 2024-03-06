@@ -92,8 +92,11 @@ runExperiment() {
 		} &
 		PIDS+=( $! )
 		elif [ "$FRAMEWORK" == "mp-spdz" ]; then
-			{	"$POS" comm laun --blocking --loop "$node" -- \
-			/bin/bash "$script" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE";
+			echo "    execute experiment on host $node..."
+		# the reset removes the compiled binaries, to make place for the next comp domain
+		{ 	"$POS" comm laun --blocking "$node" -- /bin/bash "$path"/experiment-reset.sh;
+			"$POS" comm laun --blocking --loop "$node" -- \
+				/bin/bash "$script" "$player" "$cdomain" "${cdProtocols[*]}" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE";
 		} &
 		PIDS+=( $! )
 		elif [ "$FRAMEWORK" == "motion" ]; then
