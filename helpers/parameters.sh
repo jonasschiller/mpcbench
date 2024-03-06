@@ -314,7 +314,7 @@ setParameters() {
 
 
     # Check if framework is mpspdz
-    if [ "$FRAMEWORK" = "mp-spdz" ]; then
+    if [ "$FRAMEWORK" == "mp-spdz" ]; then
          # valid experiment check
         if [ -f experiments/"$FRAMEWORK"/"$EXPERIMENT"/parameters.yml ]; then
         # get experiment node count from experiment parameters file
@@ -405,7 +405,7 @@ setParameters() {
             echo "  Summary file = $SUMMARYFILE"
         } | tee "$SUMMARYFILE"
 
-    elif [ "$FRAMEWORK" = "mpyc" ]; then
+    elif [ "$FRAMEWORK" == "mpyc" ]; then
         # Experiment run summary  information output
         SUMMARYFILE="$EXPORTPATH/run-summary.dat"
         mkdir -p "$EXPORTPATH" && rm -rf "$SUMMARYFILE"
@@ -421,7 +421,7 @@ setParameters() {
         done
         echo "  Summary file = $SUMMARYFILE"
         } | tee "$SUMMARYFILE"
-    elif [ "$FRAMEWORK" = "motion" ]; then
+    elif [ "$FRAMEWORK" == "motion" ]; then
         # split up protocols to computation domains
         for protocol in "${PROTOCOLS[@]}"; do
             if [[ "arithmetic_gmw" == "$protocol" ]]; then
@@ -452,7 +452,7 @@ setParameters() {
         done
         echo "  Summary file = $SUMMARYFILE"
         } | tee "$SUMMARYFILE"
-    elif [ "FRAMEWORK" = "hpmpc" ]; then
+    elif [ "FRAMEWORK" == "hpmpc" ]; then
         # set experiment wide variables (append random num to mitigate conflicts)
         # if value may contain a leading 0 (zero), add any char before (like manipulate)
         # Config Vars
