@@ -28,6 +28,8 @@ network="$4"
 partysize=$5
 # experiment type to allow small differences in experiments
 etype=$6
+#framework
+FRAMEWORK=$7
 # default to etype 1 if unset
 etype=${etype:-1}
 
@@ -103,10 +105,10 @@ for i in $(seq 2 $((partysize+1))); do
 done
 if [ -n "$param2" ]; then
     # run the SMC protocol
-    $skip || /usr/bin/time -f "$timerf" python /root/sevarebenchmpyc/experiments/"$EXPERIMENT"/experiment.py $partystring -I $player $size $param2 &> "$log" || success=false
+    $skip || /usr/bin/time -f "$timerf" python /root/sevarebenchabstract/experiments/"$FRAMEWORK"/"$EXPERIMENT"/experiment.py $partystring -I $player $size $param2 &> "$log" || success=false
 else
     # run the SMC protocol
-    $skip || /usr/bin/time -f "$timerf" python /root/sevarebenchmpyc/experiments/"$EXPERIMENT"/experiment.py $partystring -I $player $size &> "$log" || success=false
+    $skip || /usr/bin/time -f "$timerf" python /root/sevarebenchabstract/experiments/"$FRAMEWORK"/"$EXPERIMENT"/experiment.py $partystring -I $player $size &> "$log" || success=false
 fi
 
 
