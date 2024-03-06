@@ -58,7 +58,8 @@ setupExperiment() {
 
 	echo "  setting up host(s) ${NODES[*]}"
 	ipaddr=2
-	path=/host_scripts/
+	path=/root/sevarebenchabstract/host_scripts/
+	
 	for node in "${NODES[@]}"; do
 		{ "$POS" comm laun --infile host_scripts/"$FRAMEWORK"/host_setup.sh --blocking "$node" "${PROTOCOLS[*]}" "$FRAMEWORK" ;
 		echo "      $node host setup successfull";

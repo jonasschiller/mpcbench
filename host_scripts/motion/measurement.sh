@@ -11,9 +11,9 @@ set -e
 set -x
 
 #Get motion directory
-REPO_DIR=$(pos_get_variable repo_dir --from-global)
+REPO_DIR=$(pos_get_variable repo_motion_dir --from-global)
 #Get sevarebench directory
-REPO2_DIR=$(pos_get_variable repo2_dir --from-global)
+REPO2_DIR=$(pos_get_variable repo_dir --from-global)
 
 size=$(pos_get_variable input_size --from-loop)
 #Set up measurement and define what to measure and output format
