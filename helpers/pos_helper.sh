@@ -42,7 +42,7 @@ for node in "${NODES[@]}"; do
 	# default variables file for all experiments
 	{ "$POS" alloc set_var "$node" global-variables.yml --as-global;
 	"$POS" alloc set_var "$node" "experiments/run-variables.yml" --as-global;
-	if [ $FRAMEWORK="mp-spdz" ]; then
+	if [ $FRAMEWORK == "mp-spdz" ]; then
 		# special variables for experiment run
 		"$POS" alloc set_var "$node" experiments/"$FRAMEWORK"/"$EXPERIMENT"/parameters.yml --as-global;
 	fi
