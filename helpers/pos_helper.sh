@@ -44,7 +44,7 @@ for node in "${NODES[@]}"; do
 	"$POS" alloc set_var "$node" "experiments/run-variables.yml" --as-global;
 	if [ $FRAMEWORK="mp-spdz" ]; then
 		# special variables for experiment run
-		"$POS" alloc set_var "$node" experiments/"$FRAMEWORK"/"$EXPERIMENT"/parameters.yml --as-global;
+		"$POS" alloc set_var "$node" experiments/"$EXPERIMENT"/parameters.yml --as-global;
 	fi
 	# default variables file for concrete experiment"
 	# loop variables for experiment script (append random num to mitigate conflicts)
@@ -93,28 +93,19 @@ runExperiment() {
 	for node in "${NODES[@]}"; do
 		echo "    execute experiment on host $node..."
 		if [ "$FRAMEWORK" == "hpmpc" ]; then
-			{	"$POS" comm laun --blocking --loop "$node" -- \
-			/bin/bash "$script" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE";
-		} &
-		PIDS+=( $! )
+			"$POS" comm laun --blocking --loop "$node" -- /bin/bash "$script" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" &
+			PIDS+=( $! )
 		elif [ "$FRAMEWORK" == "mpyc" ]; then
-			{ 		"$POS" comm laun --blocking --loop "$node" -- \
-				/bin/bash "$script" "$EXPERIMENT" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" "$FRAMEWORK";
-		} &
-		PIDS+=( $! )
+			"$POS" comm laun --blocking --loop "$node" -- /bin/bash "$script" "$EXPERIMENT" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" "$FRAMEWORK" &
+			PIDS+=( $! )
 		elif [ "$FRAMEWORK" == "mp-spdz" ]; then
 			echo "    execute experiment on host $node..."
-		# the reset removes the compiled binaries, to make place for the next comp domain
-		{ 	"$POS" comm laun --blocking "$node" -- /bin/bash "$path"/experiment-reset.sh;
-			"$POS" comm laun --blocking --loop "$node" -- \
-				/bin/bash "$script" "$player" "$cdomain" "${cdProtocols[*]}" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE";
-		} &
-		PIDS+=( $! )
+			"$POS" comm laun --blocking "$node" -- /bin/bash "$path"/experiment-reset.sh
+			"$POS" comm laun --blocking --loop "$node" -- /bin/bash "$script" "$player" "$cdomain" "${cdProtocols[*]}" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" &
+			PIDS+=( $! )
 		elif [ "$FRAMEWORK" == "motion" ]; then
-		{	"$POS" comm laun --blocking --loop "$node" -- \
-			/bin/bash "$script" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE";
-		} &
-		PIDS+=( $! )
+			"$POS" comm laun --blocking --loop "$node" -- /bin/bash "$script" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" &
+			PIDS+=( $! )
 		fi
 		((++player))
 	done
