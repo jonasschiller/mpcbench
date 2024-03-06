@@ -60,7 +60,7 @@ setupExperiment() {
 	ipaddr=2
 	path=/host_scripts/
 	for node in "${NODES[@]}"; do
-		{ "$POS" comm laun --infile host_scripts/"$FRAMEWORK"/host_setup.sh --blocking "$node";
+		{ "$POS" comm laun --infile host_scripts/"$FRAMEWORK"/host_setup.sh --blocking "$node" "${PROTOCOLS[*]}" "$FRAMEWORK" ;
 		echo "      $node host setup successfull";
 		echo "    running experiment setup of $node";
 			

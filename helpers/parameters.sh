@@ -258,7 +258,8 @@ setParameters() {
         esac
         shift || true      # skip to next option-argument pair
     done
-    $EXPORTPATH="results/$FRAMEWORK/$(date +20%y-%m)/$(date +%d_%H-%M-%S)"
+    EXPORTPATH="results/$FRAMEWORK/$(date +20%y-%m)/$(date +%d_%H-%M-%S)"
+    
     # node already in use check
     #nodetasks=$(pgrep -facu "$(id -u)" "${NODES[0]}")
     #[ "$nodetasks" -gt 10 ] && error $LINENO "${FUNCNAME[0]}(): it appears host ${NODES[0]} is currently in use"
