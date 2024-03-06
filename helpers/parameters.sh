@@ -272,6 +272,8 @@ setParameters() {
         parameters="${ttypes[*]}"
         echo "${type,,}: [${parameters// /, }]" >> "$loopvarpath"
     done
+    parameters="$FRAMEWORK"
+    echo "framework: [${parameters// /, }]" >> "$loopvarpath"
     parameters="${INPUTS[*]}"
     echo "input_size: [${parameters// /, }]" >> "$loopvarpath"
     if [ "${#INPUT2[*]}" -gt 0 ]; then
