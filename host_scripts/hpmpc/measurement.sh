@@ -12,7 +12,7 @@ set -x
 
 # load global variables
 REPO_DIR=$(pos_get_variable repo_hpmpc_dir --from-global)
-REPO2_DIR=$(pos_get_variable repo2_dir --from-global)
+REPO2_DIR=$(pos_get_variable repo_dir --from-global)
 manipulate=$(pos_get_variable manipulate --from-global)
 # load loop variables/switches
 size=$(pos_get_variable input_size --from-loop)
