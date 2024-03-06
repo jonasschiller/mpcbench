@@ -423,7 +423,7 @@ setParameters() {
         done
         echo "  Summary file = $SUMMARYFILE"
         } | tee "$SUMMARYFILE"
-    elif [ "FRAMEWORK" = "hpmpc" ]
+    elif [ "FRAMEWORK" = "hpmpc" ]; then
         # Config Vars
         configvars=( OPTSHARE PACKBOOL SPLITROLES PROTOCOL PREPROCESS DATATYPE )
         configvars+=( SSL THREADS FUNCTION TXBUFFER RXBUFFER VERIFYBUFFER)
