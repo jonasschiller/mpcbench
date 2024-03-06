@@ -81,7 +81,10 @@ runExperiment() {
 	for node in "${NODES[@]}"; do
 		echo "    execute experiment on host $node..."
 		if [ "$FRAMEWORK" == "hpmpc" ]; then
-		
+			{	"$POS" comm laun --blocking --loop "$node" -- \
+			/bin/bash "$script" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE";
+		} &
+		PIDS+=( $! )
 		elif [ "$FRAMEWORK" == "mpyc" ]; then
 			{ 		"$POS" comm laun --blocking --loop "$node" -- \
 				/bin/bash "$script" "$EXPERIMENT" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" "$FRAMEWORK";
@@ -93,7 +96,10 @@ runExperiment() {
 		} &
 		PIDS+=( $! )
 		elif [ "$FRAMEWORK" == "motion" ]; then
-
+		{	"$POS" comm laun --blocking --loop "$node" -- \
+			/bin/bash "$script" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE";
+		} &
+		PIDS+=( $! )
 		fi
 		((++player))
 	done
