@@ -60,13 +60,13 @@ cd "$REPO_DIR"
 # handle yao's -O protocol Variant
 protocols="${protocols//yaoO/yao}"
 
-cp "$REPO2_DIR"/experiments/"$EXPERIMENT"/experiment.mpc \
+cp "$REPO2_DIR"/experiments/"$FRAMEWORK"/"$EXPERIMENT"/experiment.mpc \
 	"$REPO_DIR"/Programs/Source/
 # experiment specific part: load the input from the experiment into the Player Data folder of MP-SPDZ
-if [ -f "$REPO2_DIR"/experiments/"$EXPERIMENT"/aes_128.txt ]; then
-    cp "$REPO2_DIR"/experiments/"$EXPERIMENT"/aes_128.txt "$REPO_DIR"/Programs/Circuits/
+if [ -f "$REPO2_DIR"/"$FRAMEWORK"/experiments/"$EXPERIMENT"/aes_128.txt ]; then
+    cp "$REPO2_DIR"/"$FRAMEWORK"/experiments/"$EXPERIMENT"/aes_128.txt "$REPO_DIR"/Programs/Circuits/
 fi
-chmod +x "$REPO2_DIR"/helpers/* "$REPO2_DIR"/experiments/"$EXPERIMENT"/*
+chmod +x "$REPO2_DIR"/helpers/* "$REPO2_DIR"/"$FRAMEWORK"/experiments/"$EXPERIMENT"/*
 cd "$REPO_DIR"
 
 tar -xf "$REPO2_DIR"/helpers/SSLcerts.tar

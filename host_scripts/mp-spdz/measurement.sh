@@ -12,7 +12,7 @@ set -x
 
 REPO_DIR=$(pos_get_variable repo_mpspdz_dir --from-global)
 REPO2_DIR=$(pos_get_variable repo_dir --from-global)
-source "$REPO_DIR"/host_scripts/mp-spdz/protocols.sh
+source "$REPO2_DIR"/host_scripts/mp-spdz/protocols.sh
 EXPERIMENT=$(pos_get_variable experiment --from-global)
 runflags=$(pos_get_variable runflags --from-global)
 [ "$runflags" == None ] && runflags=""
