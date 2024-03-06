@@ -79,6 +79,32 @@ SECONDS=0
 RUNSTATUS="${Red}fail${Stop}"
 # this is required for the config support logic
 CONFIGRUN=false
+#MP-SPDZ
+ETYPE=""
+compflags=""
+progflags=""
+runflags=""
+PROTOCOLS=()
+CDOMAINS=()
+FIELDPROTOCOLS=()
+RINGPROTOCOLS=()
+BINARYPROTOCOLS=()
+
+#HPMPC
+# MP slice vars with default values
+DATATYPE=( 64 )
+PROTOCOL=( 2 )
+PREPROCESS=( 0 )
+SPLITROLES=( 0 )
+PACKBOOL=( 0 )
+OPTSHARE=( 1 )
+SSL=( 1 )
+THREADS=( 1 )
+FUNCTION=( 0 )
+TXBUFFER=( 0 )
+RXBUFFER=( 0 )
+VERIFYBUFFER=( 0 )
+manipulate="6666"
 
 FRAMEWORK=""
 EXPERIMENT=""
