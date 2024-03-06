@@ -14,8 +14,8 @@ REPO_DIR=$(pos_get_variable repo_mpspdz_dir --from-global)
 REPO2=$(pos_get_variable repo --from-global)
 REPO2_DIR=$(pos_get_variable repo_dir --from-global)
 EXPERIMENT=$(pos_get_variable experiment --from-global)
-FRAMEWORK=$(pos_get_variable FRAMEWORK --from-global)
-PROTOCOLS=$(pos_get_variable PROTOCOLS --from-global)
+FRAMEWORK=$(pos_get_variable framework --from-global)
+PROTOCOLS=$(pos_get_variable protocols --from-global)
 # SMC protocols to compile
 
 
