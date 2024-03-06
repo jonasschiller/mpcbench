@@ -258,6 +258,7 @@ setParameters() {
         esac
         shift || true      # skip to next option-argument pair
     done
+    $EXPORTPATH="results/$FRAMEWORK/$(date +20%y-%m)/$(date +%d_%H-%M-%S)"
     # node already in use check
     #nodetasks=$(pgrep -facu "$(id -u)" "${NODES[0]}")
     #[ "$nodetasks" -gt 10 ] && error $LINENO "${FUNCNAME[0]}(): it appears host ${NODES[0]} is currently in use"
@@ -287,9 +288,9 @@ setParameters() {
     # Check if framework is mpspdz
     if [ "$FRAMEWORK" = "mp-spdz" ]; then
          # valid experiment check
-        if [ -f experiments/"$EXPERIMENT"/parameters.yml ]; then
+        if [ -f experiments/"$FRAMEWORK"/"$EXPERIMENT"/parameters.yml ]; then
         # get experiment node count from experiment parameters file
-        requiredNODES=$(grep node_count experiments/"$EXPERIMENT"/parameters.yml | awk '{print $2}')
+        requiredNODES=$(grep node_count experiments/"$FRAMEWORK"/"$EXPERIMENT"/parameters.yml | awk '{print $2}')
         # check if the value node_count exists
         [ "$requiredNODES" -lt 1 ] && requiredNODES="-1"
         else
@@ -299,7 +300,7 @@ setParameters() {
         [ "$protocolcount" -lt 1 ] && usage "no protocols specified"
         echo "Framework is mpspdz"
         # add extra flags to parameters yaml
-        parapath=experiments/"$EXPERIMENT"/parameters.yml
+        parapath=experiments/"$FRAMEWORK"/"$EXPERIMENT"/parameters.yml
 
         # first, delete old flags
         grep -Ev "compflags|progflags|runflags" "$parapath" > tmp$NETWORK
