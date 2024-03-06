@@ -32,9 +32,16 @@ done
 
 echo "  loading variables files on host(s) ${NODES[*]}"
 
+rm "experiments/run-variables.yml"
+runtimepath="experiments/run-variables.yml"
+parameters="$FRAMEWORK"
+echo "framework: ${parameters// /, }" >> "$runtimepath"
+parameters="$EXPERIMENT"
+echo "experiment: ${parameters// /, }" >> "$runtimepath"
 for node in "${NODES[@]}"; do
 	# default variables file for all experiments
 	{ "$POS" alloc set_var "$node" global-variables.yml --as-global;
+	"$POS" alloc set_var "$node" runtimepath.yml --as-global;
 	# default variables file for concrete experiment"
 	# loop variables for experiment script (append random num to mitigate conflicts)
 	loopvarpath="experiments/loop-variables-$NETWORK.yml"
