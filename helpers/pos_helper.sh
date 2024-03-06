@@ -107,7 +107,7 @@ runExperiment() {
 			"$POS" comm laun --blocking --loop "$node" -- /bin/bash "$script" "$player" "$cdomain" "${cdProtocols[*]}" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" &
 			PIDS+=( $! )
 		elif [ "$FRAMEWORK" == "motion" ]; then
-			"$POS" comm laun --blocking --loop "$node" -- /bin/bash "$script" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" &
+			"$POS" comm laun --blocking --loop "$node" -- /bin/bash "$script" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$EXPERIMENT" "$PROTOCOLS" &
 			PIDS+=( $! )
 		fi
 		((++player))
