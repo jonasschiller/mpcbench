@@ -35,6 +35,8 @@ echo "  loading variables files on host(s) ${NODES[*]}"
 for node in "${NODES[@]}"; do
 	# default variables file for all experiments
 	{ "$POS" alloc set_var "$node" global-variables.yml --as-global;
+	"POS" alloc set_var "$FRAMEWORK" --as-global;
+	"POS" alloc set_var "$PROTOCOLS" --as-global;
 	# default variables file for concrete experiment"
 	# loop variables for experiment script (append random num to mitigate conflicts)
 	loopvarpath="experiments/loop-variables-$NETWORK.yml"
@@ -61,7 +63,7 @@ setupExperiment() {
 	path=/root/sevarebenchabstract/host_scripts/
 	
 	for node in "${NODES[@]}"; do
-		{ "$POS" comm laun --infile host_scripts/"$FRAMEWORK"/host_setup.sh --blocking "$node" "${PROTOCOLS[*]}" "$FRAMEWORK";
+		{ "$POS" comm laun --infile host_scripts/"$FRAMEWORK"/host_setup.sh --blocking "$node" ;
 		echo "      $node host setup successfull";
 		echo "    running experiment setup of $node";
 			

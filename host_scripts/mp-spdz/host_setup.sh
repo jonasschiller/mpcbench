@@ -14,9 +14,9 @@ REPO_DIR=$(pos_get_variable repo_mpspdz_dir --from-global)
 REPO2=$(pos_get_variable repo --from-global)
 REPO2_DIR=$(pos_get_variable repo_dir --from-global)
 EXPERIMENT=$(pos_get_variable experiment --from-global)
+FRAMEWORK=$(pos_get_variable FRAMEWORK --from-global)
+PROTOCOLS=$(pos_get_variable PROTOCOLS --from-global)
 # SMC protocols to compile
-protocols="$2"
-FRAMEWORK="$3"
 
 
 # check WAN connection, waiting helps in most cases
