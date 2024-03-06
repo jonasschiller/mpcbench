@@ -99,9 +99,8 @@ runExperiment() {
 			"$POS" comm laun --blocking --loop "$node" -- /bin/bash "$script" "$EXPERIMENT" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" "$FRAMEWORK" &
 			PIDS+=( $! )
 		elif [ "$FRAMEWORK" == "mp-spdz" ]; then
-			echo "    execute experiment on host $node..."
 			"$POS" comm laun --blocking "$node" -- /bin/bash "$path"/experiment-reset.sh
-			"$POS" comm laun --blocking --loop "$node" -- /bin/bash "$script" "$player" "$cdomain" "${cdProtocols[*]}" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" &
+			"$POS" comm laun --blocking --loop "$node" -- /bin/bash "$script" "$player" "$cdomain" "${Protocols[*]}" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" &
 			PIDS+=( $! )
 		elif [ "$FRAMEWORK" == "motion" ]; then
 			"$POS" comm laun --blocking --loop "$node" -- /bin/bash "$script" "$player" "${TTYPES[*]}" "$NETWORK" "${#NODES[*]}" "$ETYPE" &
