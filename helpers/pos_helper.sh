@@ -61,7 +61,7 @@ setupExperiment() {
 	path=/root/sevarebenchabstract/host_scripts/
 	
 	for node in "${NODES[@]}"; do
-		{ "$POS" comm laun --infile host_scripts/"$FRAMEWORK"/host_setup.sh --blocking "$node" "${PROTOCOLS[*]}" "$FRAMEWORK" ;
+		{ "$POS" comm laun --infile host_scripts/"$FRAMEWORK"/host_setup.sh --blocking "$node" "${PROTOCOLS[*]}" "$FRAMEWORK";
 		echo "      $node host setup successfull";
 		echo "    running experiment setup of $node";
 			
@@ -77,7 +77,7 @@ runExperiment() {
 	
 	echo "  running experiment on host(s) ${NODES[*]}"
 	player=0
-	path=/root/sevarebenchabstract/host_scripts/"$FRAMEWORK"/
+	path=/root/sevarebenchabstract/host_scripts/"$FRAMEWORK"
 	script="$path"/measurement.sh
 	for node in "${NODES[@]}"; do
 		echo "    execute experiment on host $node..."
