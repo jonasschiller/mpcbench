@@ -58,7 +58,7 @@ setupExperiment() {
 
 	echo "  setting up host(s) ${NODES[*]}"
 	ipaddr=2
-	path=/root/sevarebenchmpyc/host_scripts/
+	path=/root/sevarebenchabstract/host_scripts/"$FRAMEWORK"/
 	for node in "${NODES[@]}"; do
 		{ "$POS" comm laun --infile host_scripts/host_setup.sh --blocking "$node";
 		echo "      $node host setup successfull";
@@ -75,7 +75,7 @@ runExperiment() {
 	
 	echo "  running experiment on host(s) ${NODES[*]}"
 	player=0
-	path=/root/sevarebenchmpyc/host_scripts
+	path=/root/sevarebenchabstract/host_scripts/"$FRAMEWORK"/
 	script="$path"/measurement.sh
 		
 	for node in "${NODES[@]}"; do

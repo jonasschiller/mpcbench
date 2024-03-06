@@ -1,0 +1,36 @@
+
+"""
+Compile with -Y for Field Protocols
+Compile with -Z (number of players) and -R 64 
+Secure Statistics
+Here the parties each have a vector of size n. They want to compute the max, min, sum and mean of the values in the vector.
+The mean is calculated in the clear since the sum is revealed anyway.
+First each party provides their respective input and the values are secret_shared.
+Then in one loop the max, min and sum are calculated.
+"""
+
+from Compiler.types import sint, Array, MemValue
+from Compiler.library import print_ln, for_range
+
+
+program.bit_length = 32
+size = int(program.args[1])
+player = int(program.args[2])
+input_size=size
+datatype = sint
+
+inputs=Array(input_size,datatype)
+#Use the same loop to calculate the min, max and sum of the values
+sum_value=Array(1,sint)
+inputs.assign_all(1)
+total=input_size
+sum_value[0]=0
+@for_range_opt(input_size)
+def _(i):
+        sum_value[0]=(sum_value[0]+inputs[i])
+
+#Mean is calculated in clear since sum is revealed anyway
+mean_value=(sum_value[0]/total)
+
+print_ln("Mean: %s",mean_value.reveal())
+

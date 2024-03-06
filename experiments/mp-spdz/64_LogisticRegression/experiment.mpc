@@ -1,0 +1,48 @@
+#Logistic Regression on Dummy Inputs
+#Param1 = Number of Features
+#Param2 = Batch Size
+#Param3 = Number of Iterations
+#Param4 = Number of Threads
+
+
+from Compiler import ml
+debug=False
+sfix.set_precision(8,31)
+cfix.set_precision(8,31)
+program.options_from_args()
+
+## uncomment for accuracy test
+# import pandas as pd
+# import numpy as np
+# from sklearn import datasets
+# from sklearn.model_selection import train_test_split
+# X,y=datasets.load_breast_cancer(return_X_y=True)
+# X=X/X.max(axis=0)
+# X_train_0, X_test_0, y_train, y_test = train_test_split(X, y, random_state=0)
+# #Assign to weights
+# X_train=sfix.input_tensor_via(0,X_train_0)
+# y_train_t=sint.input_tensor_via(0,y_train)
+#dim=X_train_0.shape[1]
+#batch=X_train_0.shape[0]
+
+batch = int(program.args[1])
+dim = int(program.args[2])
+ml.Layer.back_batch_size=batch
+
+n_iterations = 10
+
+
+ml.set_n_threads(32)
+
+dense = ml.Dense(batch, dim, 1)
+sigmoid = ml.Output(batch, debug=debug, approx='approx')
+
+for x in dense.X, sigmoid.Y:
+   x.assign_all(0)
+#dense.X.assign(X_train)
+#sigmoid.Y.assign(y_train_t)
+
+sgd = ml.SGD([dense, sigmoid], n_iterations, debug=debug, report_loss=True)
+sgd.reset()
+
+sgd.run(batch_size=batch)

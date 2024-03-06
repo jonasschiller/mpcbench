@@ -2,7 +2,13 @@
 #The repos need to be changed to the framework and the specific version of sevarebench
 #The networking environment data is specific to the TUM testbed
 
-repo: https://github.com/jonasschiller/sevarebenchmpyc.git
+repo_mpspdz: https://github.com/data61/MP-SPDZ.git
+repo_mpspdz_dir: /root/MP-SPDZ
+repo_hpmpc_dir: /root/MP-Slice
+repo_hpmpc: https://github.com/jonasschiller/hpmpc.git
+repo_hpmpc_commit: f19aefd638ea7b3d90dcfb5024fdeed422e5f3b7
+
+repo: https://github.com/jonasschiller/sevarebenchabstract.git
 # changing the repo_paths requires changing them in pos_helper.sh too
 repo_dir: /root/sevarebenchmpyc
 repoupload: git@github.com:jonasschiller/sevaremeasurements.git

@@ -1,9 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC1091,2154
 
-# This script calls the network and system manipulation functions and, if necessary, compiles the MPC eperiment.
-# It is highly dependend on the execution format of the framework  
-# The network and system manipulation phase however is framework independent and can be reused for other frameworks.
+#
 # Script is run locally on experiment server.
 #
 
@@ -11,37 +9,37 @@
 set -e
 # log every command
 set -x
-#####
-# Framework independent
+
+#Get motion directory
 REPO_DIR=$(pos_get_variable repo_dir --from-global)
-timerf="%M (Maximum resident set size in kbytes)\n%e (Elapsed wall clock time in seconds)\n%P (Percent of CPU this job got)\n%S (System time in seconds)"
+#Get sevarebench directory
+REPO2_DIR=$(pos_get_variable repo2_dir --from-global)
+
 size=$(pos_get_variable input_size --from-loop)
-### add custom aprameters
-param2=$(pos_get_variable param2 --from-loop) || param2=""
-###
-EXPERIMENT=$1
-player=$2
-environ=""
+#Set up measurement and define what to measure and output format
+timerf="%M (Maximum resident set size in kbytes)\n%e (Elapsed wall clock time in seconds)\n%P (Percent of CPU this job got)"
+#Get player id
+player=$1
 # test types to simulate changing environments like cpu frequency or network latency
-read -r -a types <<< "$3"
-network="$4"
-partysize=$5
-# experiment type to allow small differences in experiments
-etype=$6
+read -r -a types <<< "$2"
+network="$3"
+partysize="$4"
+experiment="$5"
+number_of_bits="$6"
+read -r -a input <<< "$7"
+read -r -a protocols <<< "$8"
 # default to etype 1 if unset
 etype=${etype:-1}
-
+cd "$REPO_DIR"/build/bin
 
 ####
 #  environment manipulation section start
 ####
 # shellcheck source=../host_scripts/manipulate.sh
-source "$REPO_DIR"/host_scripts/manipulate.sh
-
+source "$REPO2_DIR"/host_scripts/manipulate.sh
 if [[ "${types[*]}" == *" LATENCY=0 "* ]]; then
     types=("${types[@]/LATENCY}")
 fi
-
 
 case " ${types[*]} " in
     *" CPUS "*)
@@ -58,7 +56,7 @@ case " ${types[*]} " in
             *" LATENCIES "*)
             case " ${types[*]} " in
                 *" PACKETDROPS "*)
-                    setAllParameters;;
+                    setAllParameters "$partysize";;
                 *)
                 setLatencyBandwidth;;
             esac;;                 
@@ -76,50 +74,39 @@ case " ${types[*]} " in
     *" PACKETDROPS "*)
         setPacketdrop;;
 esac
-
 ####
 #  environment manipulation section stop
 ####
-###
-# Framework dependent experiment compilation and execution
-###
-log=testresults
-touch "$log"
 
-success=true
-
-pos_sync --timeout 300
-
-# Some protocols are only for 2,3 or 4 parties
-# they imply the flag -N so it's not allowed
-extraflag="-N $partysize"
-# need to skip for some nodes
-skip=false
-
-# Format Parameter String use -P addr:port option per party
-partystring=""
+#Build a String of the IP Adresses of the parties
+ips=""
 for i in $(seq 2 $((partysize+1))); do
-    partystring+=" -P 10.10."$network"."$i":23000"
+    ips+="$((i-2)),10.10.$network.$i,1000$i "
 done
-if [ -n "$param2" ]; then
+
+for protocol in "${protocols[@]}"; do
+    log=testresults"${protocol}"
+    touch "$log"
+    success=true
+    skip=false
+
+    pos_sync --timeout 300
     # run the SMC protocol
-    $skip || /usr/bin/time -f "$timerf" python /root/sevarebenchmpyc/experiments/"$EXPERIMENT"/experiment.py $partystring -I $player $size $param2 &> "$log" || success=false
-else
-    # run the SMC protocol
-    $skip || /usr/bin/time -f "$timerf" python /root/sevarebenchmpyc/experiments/"$EXPERIMENT"/experiment.py $partystring -I $player $size &> "$log" || success=false
-fi
+    $skip ||
+        /bin/time -f "$timerf" ./"$experiment" --my-id $player --parties $ips --protocol $protocol --simd $size &> "$log" || success=false
+    pos_upload --loop "$log"
+    
+    #abort if no success
+    $success
+
+    pos_sync --loop
+done
 
 
-pos_upload --loop "$log"
-
-#abort if no success
-$success
-
-pos_sync
 
 
-###
-# Framework indepentend part
+
+
 ####
 #  environment manipulation reset section start
 ####
@@ -140,4 +127,9 @@ esac
 #  environment manipulation reset section stop
 ####
 
+
 pos_sync --loop
+
+echo "experiment successful"  >> measurementlog
+
+pos_upload --loop measurementlog

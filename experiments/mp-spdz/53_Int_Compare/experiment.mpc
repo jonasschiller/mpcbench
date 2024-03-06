@@ -1,0 +1,19 @@
+
+
+"""
+Array operations
+"""
+
+program.bit_length = 32
+size = int(program.args[1])
+player = 3
+
+base = 1
+
+datatype = sint
+
+inputs=sint.Array(size)
+inputs=inputs.assign_all(base).get_vector()
+inputs=inputs>inputs
+#verification 
+inputs[-1].reveal()

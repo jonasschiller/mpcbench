@@ -1,0 +1,16 @@
+"""
+Division
+"""
+
+size = int(program.args[1])
+program.bit_length = 32
+player = 3
+
+datatype = sfix
+datatype.set_precision(24,32)
+
+inputs=datatype.Array(size)
+inputs=inputs.assign_all(1).get_vector()
+inputs=inputs/inputs
+#verification 
+inputs[-1].reveal()

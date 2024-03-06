@@ -26,12 +26,13 @@ usage() {
 }
 
 help() {
-	echo "$0 - run SMC experiments with MP-SPDZ protocol and POS testbed environment"
-    echo "Example:  ./$0 -e 31_scalable_search -p shamir,atlas -n valga,tapa,rapla -i 10,20,...,100 -q 20,40,80 -f 1.9,2.6"
+	echo "$0 - run SMC experiments with POS testbed environment"
+    echo "Example:  ./$0 -f mp-spdz -e 31_scalable_search -p shamir,atlas -n valga,tapa,rapla -i 10,20,...,100 -q 20,40,80 -f 1.9,2.6"
     echo
     echo "<Values> supported are of the form <value1>[,<value2>,...] or use \"...\" to specify the range"
     echo "       [...,<valuei>,]<start>,<next>,...,<stop>[,valuek,...], with increment steps <next>-<start>"
     echo -e "\nOptions (mandatory)"
+    echo "-f, --framework     framework to run"
     echo " -e, --experiment     experiment to run"
     echo " -n, --nodes          nodes to run the experiment on of the form <node1>[,<node2>,...]"
     echo -e "\nOptions (optional)"
@@ -40,7 +41,7 @@ help() {
     echo -e "\nManipulate Host Environment (optional)"
     echo " -c, --cpu            cpu thread counts, with <Values>"
     echo " -q, --cpuquota       cpu quotas in % (10 < quota), with <Values>"
-    echo " -f, --freq           cpu frequencies in GHz (e.g. 1.7), with <Values>"
+    echo "  --freq           cpu frequencies in GHz (e.g. 1.7), with <Values>"
     echo " -r, --ram            limit max RAM in MiB (e.g. 1024), with <Values>, /dev/nvme0n1 required"
     echo "     --swap           set secondary memory swap size in MiB, one value, SSD /dev/nvme0n1 required"
     echo "                      mandatory with -r to allow paging/swaping (default 4096)"
@@ -79,10 +80,11 @@ RUNSTATUS="${Red}fail${Stop}"
 # this is required for the config support logic
 CONFIGRUN=false
 
+FRAMEWORK=""
 EXPERIMENT=""
 NODES=()
 INPUTS=()
-PARAM2=()
+INPUT2=()
 CPUS=()
 QUOTAS=()
 FREQS=()
@@ -111,8 +113,9 @@ setParameters() {
     # define the flags for the parameters
     # ':' means that the flag expects an argument.
     SHORT=n:,e:,i:,m:,c:,q:,f:,r:,l:,b:,d:,x,h
-    LONG=nodes:,experiment:,input:,param2:,config:,measureram:,cpu:,cpuquota:,freq:,latency:,bandwidth:,packetdrop:,help
-
+    LONG=nodes:,protocols:,dtype:,preproc:,maldishonest,codishonest,semidishonest,malhonest,semihonest,field,ring,binary,all,experiment:,etype:,compflags:,progflags:,runflags:,input:,input2:,config:,measureram:,cpu:,cpuquota:,freq:,latency:,bandwidth:,packetdrop:,help 
+    LONG+=,split:,packbool:,optshare:,ssl:,threads:,manipulate:,function:
+    LONG+=,txbuffer:,rxbuffer:,verifybuffer:
     PARSED=$(getopt --options ${SHORT} \
                     --longoptions ${LONG} \
                     --name "$0" \
@@ -124,13 +127,16 @@ setParameters() {
         case "$1" in
             -h|--help)
                 help;;
+            -f|--framework)
+                FRAMEWORK="$2"
+                shift;;
             -n|--nodes) 
                 setArray NODES "$2"
                 shift;;
             -i|--input)
                 setArray INPUTS "$2"
                 shift;;
-            --param2)
+            --input2)
                 setArray PARAM2 "$2"
                 shift;;
             -e|--experiment)
@@ -138,6 +144,43 @@ setParameters() {
                 shift;;
             -m|--measureram)
                 TTYPES+=( MEASURERAM );;
+            # MP-Slice args
+            --dtype)
+                setArray DATATYPE "$2"
+                shift;;
+            --preproc)
+                setArray PREPROCESS "$2"
+                shift;;
+            --split)
+                setArray SPLITROLES "$2"
+                shift;;
+            --packbool)
+                setArray PACKBOOL "$2"
+                shift;;
+            --optshare)
+                setArray OPTSHARE "$2"
+                shift;;
+            --ssl)
+                setArray SSL "$2"
+                shift;; 
+            --threads)
+                setArray THREADS "$2"
+                shift;;
+            --function)
+                setArray FUNCTION "$2"
+                shift;;
+            --txbuffer)
+                setArray TXBUFFER "$2"
+                shift;;
+            --rxbuffer)
+                setArray RXBUFFER "$2"
+                shift;;
+            --verifybuffer)
+                setArray VERIFYBUFFER "$2"
+                shift;;
+            --manipulate)
+                manipulate="$2"
+                shift;;
             # Host environment manipulation
             -c|--cpu)
                 TTYPES+=( CPUS )
@@ -147,7 +190,7 @@ setParameters() {
                 TTYPES+=( QUOTAS )
                 setArray QUOTAS "$2"
                 shift;;
-            -f|--freq)
+            --freq)
                 TTYPES+=( FREQS )
                 setArray FREQS "$2"
                 shift;;
@@ -168,6 +211,41 @@ setParameters() {
                 TTYPES+=( PACKETDROPS )
                 setArray PACKETDROPS "$2"
                 shift;;
+            -p|--protocols) 
+                setArray PROTOCOLS "$2"
+                shift;;
+            #MP-SPDZ Args
+            --etype)
+                ETYPE="$2"
+                shift;;
+            --compflags)
+                compflags="$2"
+                shift;;
+            --progflags)
+                progflags="$2"
+                shift;;
+            --runflags)
+                runflags="$2"
+                shift;;
+            --maldishonest)
+                PROTOCOLS+=( "${maldishonestProtocols[@]}" );;
+            --codishonest)
+                PROTOCOLS+=( "${covertdishonestProtocols[@]}" );;
+            --semidishonest)
+                PROTOCOLS+=( "${semidishonestProtocols[@]}" );;
+            --malhonest)
+                PROTOCOLS+=( "${malhonestProtocols[@]}" );;
+            --semihonest)
+                PROTOCOLS+=( "${semihonestProtocols[@]}" );;
+            --field)
+                PROTOCOLS+=( "${supportedFieldProtocols[@]}" );;
+            --ring)
+                PROTOCOLS+=( "${supportedRingProtocols[@]}" );;
+            --binary)
+                PROTOCOLS+=( "${supportedBinaryProtocols[@]}" );;
+            --all)
+                # remove real-bmr for explosive runtime costs, need to specify explicitly
+                PROTOCOLS=( "${supportedFieldProtocols[@]}" "${supportedRingProtocols[@]}" "${supportedBinaryProtocols[@]//real-bmr/}");;
             --swap)
                 SWAP="$2"
                 shift;;
@@ -194,9 +272,9 @@ setParameters() {
     done
     parameters="${INPUTS[*]}"
     echo "input_size: [${parameters// /, }]" >> "$loopvarpath"
-    if [ "${#PARAM2[*]}" -gt 0 ]; then
-        parameters="${PARAM2[*]}"
-        echo "param2: [${parameters// /, }]" >> "$loopvarpath"
+    if [ "${#INPUT2[*]}" -gt 0 ]; then
+        parameters="${INPUT2[*]}"
+        echo "input2_size: [${parameters// /, }]" >> "$loopvarpath"
     fi
 
 
@@ -205,21 +283,186 @@ setParameters() {
     # set default swap size, in case --ram is defined
     [ "${#RAM[*]}" -gt 0 ] && SWAP=${SWAP:-4096}
 
-     # Experiment run summary  information output
-    SUMMARYFILE="$EXPORTPATH/run-summary.dat"
-    mkdir -p "$EXPORTPATH" && rm -rf "$SUMMARYFILE"
-    {
-    echo "  Setup:"
-    echo "    Experiment = $EXPERIMENT $ETYPE"
-    echo "    Nodes = ${NODES[*]}"
-    echo "    Internal network = 10.10.$NETWORK.0/24"
-    echo "    Testtypes:"
-    for type in "${TTYPES[@]}"; do
-        declare -n ttypes="${type}"
-        echo -e "      $type\t= ${ttypes[*]}"
-    done
-    echo "  Summary file = $SUMMARYFILE"
-    } | tee "$SUMMARYFILE"
+
+    # Check if framework is mpspdz
+    if [ "$FRAMEWORK" = "mp-spdz" ]; then
+         # valid experiment check
+        if [ -f experiments/"$EXPERIMENT"/parameters.yml ]; then
+        # get experiment node count from experiment parameters file
+        requiredNODES=$(grep node_count experiments/"$EXPERIMENT"/parameters.yml | awk '{print $2}')
+        # check if the value node_count exists
+        [ "$requiredNODES" -lt 1 ] && requiredNODES="-1"
+        else
+        usage "Experiment $EXPERIMENT/parameters.yml not found"
+        fi
+        protocolcount="${#PROTOCOLS[*]}"
+        [ "$protocolcount" -lt 1 ] && usage "no protocols specified"
+        echo "Framework is mpspdz"
+        # add extra flags to parameters yaml
+        parapath=experiments/"$EXPERIMENT"/parameters.yml
+
+        # first, delete old flags
+        grep -Ev "compflags|progflags|runflags" "$parapath" > tmp$NETWORK
+        cat tmp$NETWORK > "$parapath"
+        rm "tmp$NETWORK"
+
+        if [ -n "$compflags" ]; then
+            echo -e "\ncompflags: $compflags" >> "$parapath"
+        else
+            echo -e "\ncompflags: " >> "$parapath"
+        fi
+
+        if [ -n "$progflags" ]; then
+            echo -e "\nprogflags: $progflags" >> "$parapath"
+        else
+            echo -e "\nprogflags: " >> "$parapath"
+        fi
+
+        if [ -n "$runflags" ]; then
+            echo -e "\nrunflags: $runflags" >> "$parapath"
+        else
+            echo -e "\nrunflags: " >> "$parapath"
+        fi
+
+        # split up protocols to computation domains
+        for protocol in "${PROTOCOLS[@]}"; do
+            if [[ " ${supportedFieldProtocols[*]} " == *" $protocol "* ]]; then
+                # filter duplicats
+                [[ " ${FIELDPROTOCOLS[*]} " == *" $protocol "* ]] || FIELDPROTOCOLS+=( "$protocol" )
+            elif [[ " ${supportedRingProtocols[*]} " == *" $protocol "* ]]; then
+                [[ " ${RINGPROTOCOLS[*]} " == *" $protocol "* ]] || RINGPROTOCOLS+=( "$protocol" )
+            elif [[ " ${supportedBinaryProtocols[*]} " == *" $protocol "* ]]; then
+                [[ " ${BINARYPROTOCOLS[*]} " == *" $protocol "* ]] || BINARYPROTOCOLS+=( "$protocol" )
+            else
+                warning "protocol $protocol was not found, skipping"
+            fi
+        done
+
+        # activate computation domain for later handling
+        [ "${#FIELDPROTOCOLS[*]}" -gt 0 ] && CDOMAINS+=( FIELD )
+        [ "${#RINGPROTOCOLS[*]}" -gt 0 ] && CDOMAINS+=( RING )
+        [ "${#BINARYPROTOCOLS[*]}" -gt 0 ] && CDOMAINS+=( BINARY )
+
+        # append -party.x to all protocols
+        for cdomain in "${CDOMAINS[@]}"; do
+            declare -n protos="${cdomain}PROTOCOLS"
+            protos=( "${protos[@]/%/-party.x}" )
+        done
+        PROTOCOLS=( "${FIELDPROTOCOLS[@]}" "${RINGPROTOCOLS[@]}" "${BINARYPROTOCOLS[@]}" )
+        
+        
+
+        # Experiment run summary  information output
+        SUMMARYFILE="$EXPORTPATH/E${EXPERIMENT::2}-run-summary.dat"
+        mkdir -p "$SUMMARYFILE" && rm -rf "$SUMMARYFILE"
+        {
+            echo "  Setup:"
+            echo "    Experiment = $EXPERIMENT $ETYPE"
+            echo "    Nodes = ${NODES[*]}"
+            echo "    Internal network = 10.10.$NETWORK.0/24"
+            echo "    Protocols:"
+            echo "      Field  = ${FIELDPROTOCOLS[*]/-party.x/}"
+            echo "      Ring   = ${RINGPROTOCOLS[*]/-party.x/}"
+            echo "      Binary = ${BINARYPROTOCOLS[*]/-party.x/}"
+            echo "    Inputs = ${INPUTS[*]}"
+            echo "    Compile flags: $compflags"
+            echo "    Program flags: $progflags"
+            echo "    Run flags: $runflags"
+            echo "    Testtypes:"
+            for type in "${TTYPES[@]}"; do
+                declare -n ttypes="${type}"
+                echo -e "      $type\t= ${ttypes[*]}"
+            done
+            echo "  Summary file = $SUMMARYFILE"
+        } | tee "$SUMMARYFILE"
+
+    elif [ "$FRAMEWORK" = "mpyc" ]; then
+        # Experiment run summary  information output
+        SUMMARYFILE="$EXPORTPATH/run-summary.dat"
+        mkdir -p "$EXPORTPATH" && rm -rf "$SUMMARYFILE"
+        {
+        echo "  Setup:"
+        echo "    Experiment = $EXPERIMENT $ETYPE"
+        echo "    Nodes = ${NODES[*]}"
+        echo "    Internal network = 10.10.$NETWORK.0/24"
+        echo "    Testtypes:"
+        for type in "${TTYPES[@]}"; do
+            declare -n ttypes="${type}"
+            echo -e "      $type\t= ${ttypes[*]}"
+        done
+        echo "  Summary file = $SUMMARYFILE"
+        } | tee "$SUMMARYFILE"
+    elif [ "$FRAMEWORK" = "motion" ]; then
+        # split up protocols to computation domains
+        for protocol in "${PROTOCOLS[@]}"; do
+            if [[ "arithmetic_gmw" == "$protocol" ]]; then
+                echo "arithmetic_gmw"
+            elif [[ "boolean_bmr" == "$protocol" ]]; then
+                echo "boolean_bmr"
+            elif [[ "boolean_gmw" == "$protocol" ]]; then
+                echo "boolean_gmw"
+            else
+                error $LINENO "${FUNCNAME[0]}(): protocol $protocol not supported"
+            fi
+        done
+        # Experiment run summary  information output
+        SUMMARYFILE="$EXPORTPATH/${EXPERIMENT}_run-summary.dat"
+        mkdir -p "$EXPORTPATH" && rm -rf "$SUMMARYFILE"
+        {
+        echo "  Setup:"
+        echo "    Experiment = $EXPERIMENT $ETYPE"
+        echo "    Nodes = ${NODES[*]}"
+        echo "    Internal network = 10.10.$NETWORK.0/24"
+        echo "    Inputs = ${INPUTS[*]}"
+        echo "    Protocols = ${PROTOCOLS[*]}"
+        echo "    Testtypes:"
+        
+        for type in "${TTYPES[@]}"; do
+            declare -n ttypes="${type}"
+            echo -e "      $type\t= ${ttypes[*]}"
+        done
+        echo "  Summary file = $SUMMARYFILE"
+        } | tee "$SUMMARYFILE"
+    elif [ "FRAMEWORK" = "hpmpc" ]
+        # Config Vars
+        configvars=( OPTSHARE PACKBOOL SPLITROLES PROTOCOL PREPROCESS DATATYPE )
+        configvars+=( SSL THREADS FUNCTION TXBUFFER RXBUFFER VERIFYBUFFER)
+        for type in "${configvars[@]}"; do
+            declare -n ttypes="${type}"
+            parameters="${ttypes[*]}"
+            echo "${type,,}: [${parameters// /, }]" >> "$loopvarpath"
+        done
+        # Experiment run summary information output
+        SUMMARYFILE="$EXPORTPATH/Eslice-run-summary.dat"
+        mkdir -p "$SUMMARYFILE" && rm -rf "$SUMMARYFILE"
+        {
+            echo "  Setup:"
+            echo "    Experiment = $EXPERIMENT $ETYPE"
+            echo "    Nodes = ${NODES[*]}"
+            echo "    Internal network = 10.10.$NETWORK.0/24"
+            echo "    Function: ${FUNCTION[*]}"
+            echo "    Protocols: ${PROTOCOL[*]}"
+            echo "    Datatypes = ${DATATYPE[*]}"
+            echo "    Inputs = ${INPUTS[*]}"
+            echo "    Preprocessing: ${PREPROCESS[*]}"
+            echo "    SplitRoles: ${SPLITROLES[*]}"
+            echo "    Pack Bool: ${PACKBOOL[*]}"
+            echo "    Optimized Sharing: ${OPTSHARE[*]}"
+            echo "    SSL: ${SSL[*]}"
+            echo "    Threads: ${THREADS[*]}"
+            echo "    txBuffer: ${TXBUFFER[*]}"
+            echo "    rxBuffer: ${RXBUFFER[*]}"
+            echo "    verifyBuffer: ${VERIFYBUFFER[*]}"
+            [ "$manipulate" != "6666" ] && echo "    manipulate: $manipulate"
+            echo "    Testtypes:"
+            for type in "${TTYPES[@]}"; do
+                declare -n ttypes="${type}"
+                echo -e "      $type\t= ${ttypes[*]}"
+            done
+            echo "  Summary file = $SUMMARYFILE"
+            } | tee "$SUMMARYFILE"
+    fi
+    
 }
 
 # inspired by https://unix.stackexchange.com/a/206216

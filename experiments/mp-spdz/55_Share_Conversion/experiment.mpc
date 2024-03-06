@@ -1,0 +1,15 @@
+program.bit_length = 32
+size = int(program.args[1])
+player = 3
+datatype = sint
+base = 0
+
+inputs=sint.Array(size)
+inputs=inputs.assign_all(base)
+# Comparison should force share conversion
+@for_range(size)
+def _(i):
+    inputs[i]=inputs[i]*inputs[i]
+    inputs[i]=inputs[i]>inputs[i]
+#verification 
+inputs[-1].reveal()
