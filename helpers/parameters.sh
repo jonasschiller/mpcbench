@@ -452,7 +452,8 @@ setParameters() {
         done
         echo "  Summary file = $SUMMARYFILE"
         } | tee "$SUMMARYFILE"
-    elif [ "FRAMEWORK" == "hpmpc" ]; then
+    elif [ "$FRAMEWORK" == "hpmpc" ]; then
+        echo "hpmpc detected"
         # set experiment wide variables (append random num to mitigate conflicts)
         # if value may contain a leading 0 (zero), add any char before (like manipulate)
         # Config Vars
