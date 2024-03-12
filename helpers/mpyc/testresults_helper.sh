@@ -130,13 +130,13 @@ exportExperimentResults() {
     fi
 
     echo " pushing experiment measurement data to git repo$repourl"
-    cd git-upload ||  error ${LINENO} "${FUNCNAME[0]} cd into gitrepo failed"
+    cd git-upload || { warning "${FUNCNAME[0]}:${LINENO} cd into gitrepo failed"; return; }
     {
         # a pull is not really required, but for small sizes it doesn't hurt
         git pull
         # copy from local folder to git repo folder
-        [ ! -d "$EXPORTPATH" ] && mkdir -p "EXPORTPATH"
-        cp -r ../"$EXPORTPATH" "${EXPORTPATH::-11}"
+        [ ! -d "${EXPORTPATH::-12}" ] && mkdir results/"${EXPORTPATH::-12}"
+        cp -r ../"$EXPORTPATH" "${EXPORTPATH::-12}"
         git add . 
         git commit -a -m "script upload"
         git push 
