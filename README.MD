@@ -94,10 +94,24 @@ and F9. This activates the trap that launches the verification and exporting of 
 
 
 Adding a new experiment depends on the  framework as some frameworks require experiments to be present during framework compilation while others allow for separate compilation.
-The easiest way of adding an experiment is through storing the code in this repository in the experiment section and then copying the code to the required place once the server is setup either before or after framework installation
 
+#### MOTION
+To add a new experiment for the MOTION framework, you need to clone the MOTION repository, for example from https://github.com/jonasschiller/MOTION, then add an experiment under MOTION/src/ and don't forget to add the experiment to the cmake file. Then the experiment can be selected in mpcbench with its defined name in the cmake file
+
+#### MP-SPDZ
+
+Add the experiment in the mpcbench/experiment directory and it will be copied into the right place of the MP-SPDZ framework. The experiment can be selected in mpcbench with the name of the folder it is in.
+
+#### MPyC 
+
+Add the experiment in the mpcbench/experiment directory and it will be executed from there using python. The experiment can be selected using the folder path from the experiment/mpyc directory.
+
+#### HP-MPC
+
+Add the new experiment in the HP-MPC framework source code and select it in mpcbench with the number of the function.
 
 ### Add new testbed nodes
+
 
 New servers can simply be added through adding their network information in the global-variables.yml file together with their network topology.
 

@@ -72,7 +72,7 @@ exportExperimentResults() {
     if [ -z "$runtimeinfo" ]; then
             runtimeinfo=$(find "$resultpath" -name "testresults${protocol}*_run*$i" -print -quit)
     fi
-    elif[ "$i" -lt 100 ]; then
+    elif [ "$i" -lt 100 ]; then
     runtimeinfo=$(find "$resultpath" -name "testresults${protocol}*_run*$i" -print -quit)
     if [ -z "$runtimeinfo" ]; then
             runtimeinfo=$(find "$resultpath" -name "testresults${protocol}*_run*$i" -print -quit)
