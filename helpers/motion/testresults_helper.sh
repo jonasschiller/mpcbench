@@ -67,8 +67,16 @@ exportExperimentResults() {
         partysize=${#NODES[*]}
         
         # get pos filepath of the measurements for the current loop
-        if [ "$i" -lt 10 ]; then
+    if [ "$i" -lt 10 ]; then
     runtimeinfo=$(find "$resultpath" -name "testresults${protocol}*_run0$i" -print -quit)
+    if [ -z "$runtimeinfo" ]; then
+            runtimeinfo=$(find "$resultpath" -name "testresults${protocol}*_run*$i" -print -quit)
+    fi
+    elif[ "$i" -lt 100 ]; then
+    runtimeinfo=$(find "$resultpath" -name "testresults${protocol}*_run*$i" -print -quit)
+    if [ -z "$runtimeinfo" ]; then
+            runtimeinfo=$(find "$resultpath" -name "testresults${protocol}*_run*$i" -print -quit)
+    fi
     else
     runtimeinfo=$(find "$resultpath" -name "testresults${protocol}*_run*$i" -print -quit)
     fi
