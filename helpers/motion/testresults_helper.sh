@@ -49,8 +49,19 @@ exportExperimentResults() {
     i=0
     # get loopfile path for the current variables
     if [ "$i" -lt 10 ]; then
+    loopinfo=$(find "$resultpath" -name "*00$i.loop*" -print -quit)
+    if [ -z "$loopinfo" ]; then
+        loopinfo=$(find "$resultpath" -name "*0$i.loop*" -print -quit)
+    fi
+    if [ -z "$loopinfo" ]; then
+        loopinfo=$(find "$resultpath" -name "*$i.loop*" -print -quit)
+    fi
+    elif [ "$i" -lt 100 ]; then
     loopinfo=$(find "$resultpath" -name "*0$i.loop*" -print -quit)
-    else
+    if [ -z "$loopinfo" ]; then
+        loopinfo=$(find "$resultpath" -name "*$i.loop*" -print -quit)
+    fi
+    else 
     loopinfo=$(find "$resultpath" -name "*$i.loop*" -print -quit)
     fi
 
@@ -68,12 +79,15 @@ exportExperimentResults() {
         
         # get pos filepath of the measurements for the current loop
     if [ "$i" -lt 10 ]; then
-    runtimeinfo=$(find "$resultpath" -name "testresults${protocol}*_run0$i" -print -quit)
+    runtimeinfo=$(find "$resultpath" -name "testresults${protocol}*_run00$i" -print -quit)
+    if [ -z "$runtimeinfo" ]; then
+            runtimeinfo=$(find "$resultpath" -name "testresults${protocol}*_run*0$i" -print -quit)
+    fi
     if [ -z "$runtimeinfo" ]; then
             runtimeinfo=$(find "$resultpath" -name "testresults${protocol}*_run*$i" -print -quit)
     fi
     elif [ "$i" -lt 100 ]; then
-    runtimeinfo=$(find "$resultpath" -name "testresults${protocol}*_run*$i" -print -quit)
+    runtimeinfo=$(find "$resultpath" -name "testresults${protocol}*_run*0$i" -print -quit)
     if [ -z "$runtimeinfo" ]; then
             runtimeinfo=$(find "$resultpath" -name "testresults${protocol}*_run*$i" -print -quit)
     fi
@@ -130,8 +144,19 @@ exportExperimentResults() {
         # locate next loop file
         ((++i))
     if [ "$i" -lt 10 ]; then
+    loopinfo=$(find "$resultpath" -name "*00$i.loop*" -print -quit)
+    if [ -z "$loopinfo" ]; then
+        loopinfo=$(find "$resultpath" -name "*0$i.loop*" -print -quit)
+    fi
+    if [ -z "$loopinfo" ]; then
+        loopinfo=$(find "$resultpath" -name "*$i.loop*" -print -quit)
+    fi
+    elif [ "$i" -lt 100 ]; then
     loopinfo=$(find "$resultpath" -name "*0$i.loop*" -print -quit)
-    else
+    if [ -z "$loopinfo" ]; then
+        loopinfo=$(find "$resultpath" -name "*$i.loop*" -print -quit)
+    fi
+    else 
     loopinfo=$(find "$resultpath" -name "*$i.loop*" -print -quit)
     fi
     done
