@@ -24,7 +24,7 @@ malhonestProtocols=( malicious-shamir malicious-rep-field ps-rep-field sy-rep-fi
 semihonestProtocols=( shamir atlas replicated-field replicated-ring replicated-bin 
     ccd shamir-bmr rep-bmr )
 # currently unsupported
-##supportedRingProtocols+=( rep4-ring )
+supportedRingProtocols+=( rep4-ring )
 ##supportedBinaryProtocols+=( tiny )
 
 # split by allowed party size, others allow any size
