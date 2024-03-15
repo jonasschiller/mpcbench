@@ -247,6 +247,7 @@ resetTrafficControl() {
     NIC2=$(pos_get_variable "$(hostname)"NIC2 --from-global) || NIC2=0
     nodenumber=$((player+1))
     nodemanipulate="${manipulate:nodenumber:1}"
+    partysize="$1"
     # three interconnected nodes
     if [ "$partysize" -eq 3 ]; then
         # the code to active NIC0 is 0 and 2, exclude 1 to match

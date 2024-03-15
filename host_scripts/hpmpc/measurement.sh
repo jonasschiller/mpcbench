@@ -116,7 +116,7 @@ case " ${types[*]} " in
             *" LATENCIES "*)
             case " ${types[*]} " in
                 *" PACKETDROPS "*)
-                    setAllParameters;;
+                    setAllParameters "$partysize";;
                 *)
                 setLatencyBandwidth;;
             esac;;                 
@@ -226,7 +226,7 @@ case " ${types[*]} " in
     *" RAM "*)
         unlimitRAM;;&
     *" BANDWIDTHS "*|*" LATENCIES "*|*" PACKETDROPS "*)
-    	resetTrafficControl;;&
+    	resetTrafficControl "$partysize";;&
     *" CPUS "*)
         unlimitCPUs
 esac
