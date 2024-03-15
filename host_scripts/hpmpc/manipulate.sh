@@ -242,16 +242,22 @@ unlimitRAM() {
 }
 
 resetTrafficControl() {
-
-    nodenumber=$((player+1))
-    nodemanipulate="${manipulate:nodenumber:1}"
-
-    # skip when code 7 -> do not manipulate any link
-    [ "$nodemanipulate" -eq 7 ] && return 0
-
     NIC0=$(pos_get_variable "$(hostname)"NIC0 --from-global)
     NIC1=$(pos_get_variable "$(hostname)"NIC1 --from-global) || NIC1=0
     NIC2=$(pos_get_variable "$(hostname)"NIC2 --from-global) || NIC2=0
+    nodenumber=$((player+1))
+    nodemanipulate="${manipulate:nodenumber:1}"
+    # three interconnected nodes
+    if [ "$partysize" -eq 3 ]; then
+        # the code to active NIC0 is 0 and 2, exclude 1 to match
+        tc qdisc delete dev "$NIC0" root
+        # the code to active NIC1 is 1 and 2, exclude 0 to match
+        [ "$NIC1" != 0 ] && tc qdisc delete dev "$NIC1" root
+        return 0
+    # skip when code 7 -> do not manipulate any link
+    [ "$nodemanipulate" -eq 7 ] && return 0
+
+    
 
     
     # three interconnected nodes
