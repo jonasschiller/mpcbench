@@ -315,7 +315,7 @@ setParameters() {
 
     # Check if framework is mpspdz
     if [ "$FRAMEWORK" == "mp-spdz" ]; then
-         # valid experiment check
+         # valid experiment checkvi
         if [ -f experiments/"$FRAMEWORK"/"$EXPERIMENT"/parameters.yml ]; then
         # get experiment node count from experiment parameters file
         requiredNODES=$(grep node_count experiments/"$FRAMEWORK"/"$EXPERIMENT"/parameters.yml | awk '{print $2}')

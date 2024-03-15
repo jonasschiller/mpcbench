@@ -46,7 +46,7 @@ cd "$REPO_DIR"
             RING) 
                 /bin/time -f "$timerf" ./compile.py -Z 3 -R 128 experiment "$size" "$partysize" "$etype";;
             BINARY) 
-                /bin/time -f "$timerf" ./compile.py -B 32 experiment "$size" "$partysize" "$etype";;
+                /bin/time -f "$timerf" ./compile.py -B 1 experiment "$size" "$partysize" "$etype";;
             *) # default to FIELD
                 /bin/time -f "$timerf" ./compile.py -Y experiment "$size" "$partysize" "$etype";;
         esac
@@ -59,7 +59,7 @@ cd "$REPO_DIR"
             RING) 
                 /bin/time -f "$timerf" ./compile.py -Z 3 -R 128 experiment "$size" "$features" "$partysize" "$etype";;
             BINARY) 
-                /bin/time -f "$timerf" ./compile.py -B 32 experiment "$size" "$features" "$partysize" "$etype";;
+                /bin/time -f "$timerf" ./compile.py -B 1 experiment "$size" "$features" "$partysize" "$etype";;
             *) # default to FIELD
                 /bin/time -f "$timerf" ./compile.py -Y experiment "$size" "$features" "$partysize" "$etype";;
         esac
