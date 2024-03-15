@@ -254,6 +254,7 @@ resetTrafficControl() {
         # the code to active NIC1 is 1 and 2, exclude 0 to match
         [ "$NIC1" != 0 ] && tc qdisc delete dev "$NIC1" root
         return 0
+    fi
     # skip when code 7 -> do not manipulate any link
     [ "$nodemanipulate" -eq 7 ] && return 0
 
