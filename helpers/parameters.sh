@@ -457,6 +457,7 @@ setParameters() {
         # set experiment wide variables (append random num to mitigate conflicts)
         # if value may contain a leading 0 (zero), add any char before (like manipulate)
         # Config Vars
+        Protocol=${PROTOCOLS[*]}
         configvars=( OPTSHARE PACKBOOL SPLITROLES PROTOCOL PREPROCESS DATATYPE )
         configvars+=( SSL THREADS FUNCTION TXBUFFER RXBUFFER VERIFYBUFFER)
         for type in "${configvars[@]}"; do
