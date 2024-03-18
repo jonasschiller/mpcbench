@@ -29,7 +29,7 @@ batch = int(program.args[1])
 dim = int(program.args[2])
 ml.Layer.back_batch_size=batch
 
-n_iterations = 10
+n_iterations = 100
 
 
 ml.set_n_threads(32)
