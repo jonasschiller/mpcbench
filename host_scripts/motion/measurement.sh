@@ -116,7 +116,7 @@ case " ${types[*]} " in
     *" RAM "*)
         unlimitRAM;;&
     *" BANDWIDTHS "*|*" LATENCIES "*|*" PACKETDROPS "*)
-    	resetTrafficControl;;&
+    	resetTrafficControl "$partysize";;&
     *" CPUS "*)
         unlimitCPUs
 esac

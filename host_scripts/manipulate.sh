@@ -60,18 +60,20 @@ limitBandwidth() {
     return 0
 }
 
-# sets latency, packet loss and bandwidth
 setAllParameters() {
+    partysize=$1
     latency=$(pos_get_variable latencies --from-loop)
     bandwidth=$(pos_get_variable bandwidths --from-loop)
     packetdrop=$(pos_get_variable packetdrops --from-loop)
 
     NIC0=$(pos_get_variable "$(hostname)"NIC0 --from-global)
     NIC1=$(pos_get_variable "$(hostname)"NIC1 --from-global) || NIC1=0
+    NIC2=$(pos_get_variable "$(hostname)"NIC2 --from-global) || NIC2=0
 
- # Add root qdisc with packet loss
+   # Add root qdisc with packet loss
  tc qdisc add dev "$NIC0" root netem rate "$bandwidth"mbit loss "$packetdrop"% delay "$latency"ms
 [ "$NIC1" != 0 ] && tc qdisc add dev "$NIC1" root netem rate "$bandwidth"mbit loss "$packetdrop"% delay "$latency"ms
+[ "$NIC2" != 0 ] && [ "$partysize" == 4 ] && tc qdisc add dev "$NIC2" root netem rate "$bandwidth"mbit loss "$packetdrop"% delay "$latency"ms
 return 0
 }
 # Sets only the latency for all connections
@@ -181,11 +183,12 @@ unlimitRAM() {
 }
 
 resetTrafficControl() {
-
+    partysize=$1
     NIC0=$(pos_get_variable "$(hostname)"NIC0 --from-global)
     NIC1=$(pos_get_variable "$(hostname)"NIC1 --from-global) || NIC1=0
     tc qdisc delete dev "$NIC0" root
     [ "$NIC1" != 0 ] && tc qdisc delete dev "$NIC1" root
+    [ "$NIC2" != 0 ] && [ "$partysize" == 4 ] && tc qdisc delete dev "$NIC2" root
     return 0
 }
 
