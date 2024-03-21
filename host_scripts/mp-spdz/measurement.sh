@@ -151,11 +151,11 @@ for protocol in "${protocols[@]}"; do
 
     if [ $features -eq 0 ]; then
         $skip ||
-        /bin/time -f "$timerf" ./"$protocol" $runflags -h 10.10."$network".2 $extraflag -p "$player" \
+        /bin/time -f "$timerf" ./"$protocol" -v $runflags -h 10.10."$network".2 $extraflag -p "$player" \
             experiment-"$size"-"$partysize"-"$etype" &> "$log" || success=false
     else
         $skip ||
-        /bin/time -f "$timerf" ./"$protocol" $runflags -h 10.10."$network".2 $extraflag -p "$player" \
+        /bin/time -f "$timerf" ./"$protocol" -v $runflags -h 10.10."$network".2 $extraflag -p "$player" \
             experiment-"$size"-"$features"-"$partysize"-"$etype" &> "$log" || success=false
     fi
     # run the SMC protocol
