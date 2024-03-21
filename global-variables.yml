@@ -48,31 +48,31 @@ raplaNIC1: enp130s0f0
 # 25G
 # Intel Nodes
 # NEW TOPOLOGY
-#idexNIC0: ens2f1
-#idexNIC1: ens4f1
-#idexNIC2: ens4f0
-#meldNIC0: ens4f0
-#meldNIC1: ens2f1
-#meldNIC2: ens4f1
-#tinymanNIC0: ens4f0
-#tinymanNIC1: ens4f1
-#tinymanNIC2: ens4f1
-#yieldlyNIC0: ens2f1
-#yieldlyNIC1: ens4f0
-#yieldlyNIC2: ens2f1
-
-idexNIC0: ens4f0
-idexNIC1: ens2f1
-idexNIC2: ens4f1
+idexNIC0: ens2f1
+idexNIC1: ens4f1
+idexNIC2: ens4f0
 meldNIC0: ens4f0
 meldNIC1: ens2f1
 meldNIC2: ens4f1
 tinymanNIC0: ens4f0
-tinymanNIC1: ens2f1
+tinymanNIC1: ens4f1
 tinymanNIC2: ens4f1
-yieldlyNIC0: ens4f1
-yieldlyNIC1: ens2f1
-yieldlyNIC2: ens4f0
+yieldlyNIC0: ens2f1
+yieldlyNIC1: ens4f0
+yieldlyNIC2: ens2f1
+
+#idexNIC0: ens4f0
+#idexNIC1: ens2f1
+#idexNIC2: ens4f1
+#meldNIC0: ens4f0
+#meldNIC1: ens2f1
+#meldNIC2: ens4f1
+#tinymanNIC0: ens4f0
+#tinymanNIC1: ens2f1
+#tinymanNIC2: ens4f1
+#yieldlyNIC0: ens4f1
+#yieldlyNIC1: ens2f1
+#yieldlyNIC2: ens4f0
 
 # 25G
 ##gardNIC0: enp194s0f0
