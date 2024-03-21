@@ -96,7 +96,17 @@ and F9. This activates the trap that launches the verification and exporting of 
 Adding a new experiment depends on the  framework as some frameworks require experiments to be present during framework compilation while others allow for separate compilation.
 
 #### MOTION
-To add a new experiment for the MOTION framework, you need to clone the MOTION repository, for example from https://github.com/jonasschiller/MOTION, then add an experiment under MOTION/src/ and don't forget to add the experiment to the cmake file. Then the experiment can be selected in mpcbench with its defined name in the cmake file
+To add a new experiment for the MOTION framework, you need to clone the MOTION repository, for example from https://github.com/jonasschiller/MOTION, then add an experiment under MOTION/src/ and don't forget to add the experiment to the cmake file. The experiment can then be locally compiled by the following steps
+- `cd MOTION`
+- `mkdir build`
+- `cd build`
+- `cmake .. -DMOTION_BUILD_EXE=On`
+- `make all -j 4`
+To test it locally,- switch to the MOTION/build/bin folder. You can start an experiment by using multiple command lines with the command:
+./<experimentname> --my-id <partyid> --parties <id,ip-address,port> <id,ip-address,port> --simd <input_size>
+Experiment name is the name of the binary file in the bin folder, the id is given to each player starting from 0 and counting upwards, the parties are defined by the triple of id, ip address, and port, and the simd is the input size. The ip address is the localhost for local computations.
+If the framework compiles, upload it to the repository. 
+Then the experiment can be selected in mpcbench with its defined name in the cmake file.
 
 #### MP-SPDZ
 
