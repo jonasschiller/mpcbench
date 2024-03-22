@@ -3,8 +3,12 @@ size = int(program.args[1])
 player = 3
 datatype = sint
 base = 0
-M=[0]*size
-input=sint.input_tensor_via(0, M)
+
+datatype = sint
+@multithread(15,size)
+def f(base,size):
+    M=[0]*size
+    input=sint.input_tensor_via(0, M)
 
 # #For Binary
 # program.bit_length = 32

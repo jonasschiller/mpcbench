@@ -10,8 +10,11 @@ player = 3
 
 datatype = sint
 #Test
-inputs=datatype.Array(size)
-inputs=inputs.assign_all(1).get_vector()
-inputs=sint.bit_and(inputs,inputs)
-#verification 
-inputs[-1].reveal()
+
+@multithread(15,size)
+def f(base,size):
+    inputs=datatype.Array(size)
+    inputs=inputs.assign_all(1).get_vector()
+    inputs=sint.bit_and(inputs,inputs)
+    #verification 
+    inputs[-1].reveal()
