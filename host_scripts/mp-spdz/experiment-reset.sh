@@ -5,7 +5,7 @@ set -e
 # log every command
 set -x
 
-REPO_DIR=$(pos_get_variable repo_dir --from-global)
+REPO_DIR=$(pos_get_variable repo_mpspdz_dir --from-global)
 
 cd "$REPO_DIR"
 
