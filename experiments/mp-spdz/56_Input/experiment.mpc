@@ -5,7 +5,7 @@ datatype = sint
 base = 0
 
 datatype = sint
-@multithread(20,size)
+@multithread(10,size)
 def f(base,size):
     M=[0]*size
     input=sint.input_tensor_via(0, M)
