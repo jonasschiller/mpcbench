@@ -3,7 +3,7 @@
 """
 Array operations
 """
-
+#Parallel execution does not work for binary protocols
 program.bit_length = 32
 size = int(program.args[1])
 player = 3

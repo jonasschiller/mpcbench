@@ -2,7 +2,7 @@
 """
 Array operations
 """
-
+#Parallel execution does not work for binary protocols
 
 size = int(program.args[1])
 program.bit_length = 1
@@ -11,10 +11,8 @@ player = 3
 datatype = sint
 #Test
 
-@multithread(10,size)
-def f(base,size):
-    inputs=datatype.Array(size)
-    inputs=inputs.assign_all(1).get_vector()
-    inputs=sint.bit_and(inputs,inputs)
-    #verification 
-    inputs[-1].reveal()
+inputs=datatype.Array(size)
+inputs=inputs.assign_all(1).get_vector()
+inputs=sint.bit_and(inputs,inputs)
+#verification 
+inputs[-1].reveal()
