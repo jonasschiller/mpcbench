@@ -38,7 +38,7 @@ exportExperimentResults() {
 
     # generate header line of data dump with column information
     basicInfo1="program;c.domain;adv.model;protocol;partysize;comp.time(s);comp.peakRAM(MiB);bin.filesize(MiB);"
-    basicInfo2="${dyncolumns}runtime_internal(s);runtime_external(s);peakRAM(MiB);jobCPU(%);P0commRounds;P0dataSent(MB);ALLdataSent(MB);System time (s)"
+    basicInfo2="${dyncolumns}runtime_internal(s);runtime_external(s);peakRAM(MiB);jobCPU(%);P0commRounds;P0dataSent(MB);ALLdataSent(MB);System time (s);Preprocessing Time(s)"
     compileInfo="comp.P0intin;comp.P1intin;comp.P2intin;comp.P0bitin;comp.P1bitin;compP2bitin;comp.intbits;comp.inttriples;comp.bittriples;comp.vmrounds;"
     echo -e "${basicInfo1}${basicInfo2}" > "$datatableShort"
     echo -e "${basicInfo1}${compileInfo}${basicInfo2};Tx(MB);Tx(rounds);Tx(s);Rx(MB);Rx(rounds);Rx(s);Brcasting(MB);Brcasting(rounds);Brcasting(s);TxRx(MB);TxRx(rounds);TxRx(s);Passing(MB);Passing(rounds);Passing(s);Part.Brcasting(MB);Part.Brcasting(rounds);Part.Brcasting(s);Ex(MB);Ex(rounds);Ex(s);Ex1to1(MB);Ex1to1(rounds);Ex1to1(s);Rx1to1(MB);Rx1to1(rounds);Rx1to1(s);Tx1to1(MB);Tx1to1(rounds);Tx1to1(s);Txtoall(MB);Txtoall(rounds);Txtoall(s)" > "$datatableFull"
@@ -94,7 +94,7 @@ exportExperimentResults() {
                 jobCPU=$(grep "CPU this job" "$runtimeinfo" | awk '{print $1}')
                 maxRAMused=${maxRAMused:-NA}
                 compilemaxRAMused=${compilemaxRAMused:-NA}
-
+                preprocesing=$(grep "seconds on the preprocessing/offline phase" "$runtimeinfo" | awk '{print $17}')
                 commRounds=$(grep "Data sent =" "$runtimeinfo" | awk '{print $7}')
                 dataSent=$(grep "Data sent =" "$runtimeinfo" | awk '{print $4}')
                 globaldataSent=$(grep "Global data sent =" "$runtimeinfo" | awk '{print $5}')
@@ -102,7 +102,7 @@ exportExperimentResults() {
 
                 # put all collected info into one row (Short)
                 basicInfo="${EXPERIMENT::2};$cdomain;$advModel;$protocol;$partysize;${compiletime:-NA};$compilemaxRAMused;${binfsize:-NA}"
-                echo -e "$basicInfo;$loopvalues$runtimeint;$runtimeext;$maxRAMused;$jobCPU;$basicComm;$systime" >> "$datatableShort"
+                echo -e "$basicInfo;$loopvalues$runtimeint;$runtimeext;$maxRAMused;$jobCPU;$basicComm;$systime;${preprocessing:-NA}" >> "$datatableShort"
 
                 ## Full result measurement information
                 ######
