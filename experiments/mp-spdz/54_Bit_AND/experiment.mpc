@@ -11,7 +11,7 @@ player = 3
 datatype = sint
 #Test
 
-@multithread(15,size)
+@multithread(20,size)
 def f(base,size):
     inputs=datatype.Array(size)
     inputs=inputs.assign_all(1).get_vector()

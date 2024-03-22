@@ -10,7 +10,7 @@ datatype = sfix
 datatype.set_precision(24,32)
 
 datatype = sint
-@multithread(15,size)
+@multithread(20,size)
 def f(base,size):
     inputs=datatype.Array(size)
     inputs=inputs.assign_all(1).get_vector()

@@ -9,7 +9,7 @@ program.bit_length = 32
 player = 3
 
 datatype = sint
-@multithread(15,size)
+@multithread(20,size)
 def f(base,size):
     inputs=sint.Array(size)
     inputs=inputs.assign_all(0).get_vector()
