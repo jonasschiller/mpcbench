@@ -46,7 +46,7 @@ cd "$REPO_DIR"
             RING) 
                 /bin/time -f "$timerf" ./compile.py  -R 128 --budget 200000 experiment "$size" "$partysize" "$etype";;
             BINARY) 
-                /bin/time -f "$timerf" ./compile.py -B 1 --budget 200000 experiment "$size" "$partysize" "$etype";;
+                /bin/time -f "$timerf" ./compile.py -B 32 --budget 200000 experiment "$size" "$partysize" "$etype";;
             *) # default to FIELD
                 /bin/time -f "$timerf" ./compile.py --budget 200000 experiment "$size" "$partysize" "$etype";;
         esac
