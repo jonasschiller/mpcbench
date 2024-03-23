@@ -94,7 +94,7 @@ exportExperimentResults() {
                 jobCPU=$(grep "CPU this job" "$runtimeinfo" | awk '{print $1}')
                 maxRAMused=${maxRAMused:-NA}
                 compilemaxRAMused=${compilemaxRAMused:-NA}
-                preprocesing=$(grep "seconds on the preprocessing/offline phase" "$runtimeinfo" | awk '{print $17}')
+                preprocessing=$(grep "preprocessing/offline" "$runtimeinfo" | awk '{print $17}')
                 commRounds=$(grep "Data sent =" "$runtimeinfo" | awk '{print $7}')
                 dataSent=$(grep "Data sent =" "$runtimeinfo" | awk '{print $4}')
                 globaldataSent=$(grep "Global data sent =" "$runtimeinfo" | awk '{print $5}')
