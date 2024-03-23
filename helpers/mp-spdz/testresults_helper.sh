@@ -103,7 +103,7 @@ exportExperimentResults() {
 
                 # put all collected info into one row (Short)
                 basicInfo="${EXPERIMENT::2};$cdomain;$advModel;$protocol;$partysize;${compiletime:-NA};$compilemaxRAMused;${binfsize:-NA}"
-                echo -e "$basicInfo;$loopvalues$runtimeint;$runtimeext;$maxRAMused;$jobCPU;$basicComm;$systime;${preprocessing:-NA}" >> "$datatableShort"
+                echo -e "$basicInfo;$loopvalues$runtimeint;$runtimeext;$maxRAMused;$jobCPU;$basicComm;$systime;${preprocessing:-NA},${online:-NA}" >> "$datatableShort"
 
                 ## Full result measurement information
                 ######
