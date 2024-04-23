@@ -88,6 +88,13 @@ zoneNIC0: enp193s0f1      # To Algofi
 zoneNIC1: enp195s0f0      # To Gard
 zoneNIC2: enp195s0f1      # To Goracle
 
+#Three Part Setup
+algofiNIC0: enp195s0f1    # To Gard
+algofiNIC1: enp195s0f0    # To Goracle
+gardNIC1: enp195s0f1      # To Algofi
+gardNIC0: enp193s0f1      # To Goracle
+goracleNIC0: enp195s0f1   # To Algofi
+goracleNIC1: enp193s0f1   # To Gard
 
 ## testbedSpringfield NIC configuration
 bartNIC0: enp4s0
