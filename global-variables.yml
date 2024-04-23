@@ -74,21 +74,20 @@ yieldlyNIC2: ens2f1
 #yieldlyNIC1: ens2f1
 #yieldlyNIC2: ens4f0
 
-# 25G
-##gardNIC0: enp194s0f0
-##goracleNIC1: enp194s0f0
-##goracleNIC0: enp193s0f1
-##zoneNIC1: enp193s0f1
-##zoneNIC0: enp194s0f0
-##gardNIC1: enp194s0f1
+# NEW TOPOLOGY
+algofiNIC0: enp195s0f1    # To Gard
+algofiNIC1: enp195s0f0    # To Goracle
+algofiNIC2: enp193s0f1    # To Zone
+gardNIC2: enp195s0f1      # To Algofi
+gardNIC0: enp193s0f1      # To Goracle
+gardNIC1: enp195s0f0      # To Zone
+goracleNIC1: enp195s0f1   # To Algofi
+goracleNIC2: enp193s0f1   # To Gard
+goracleNIC0: enp195s0f0   # To Zone
+zoneNIC0: enp193s0f1      # To Algofi
+zoneNIC1: enp195s0f0      # To Gard
+zoneNIC2: enp195s0f1      # To Goracle
 
-# 100G temporary indirect with gard as center node
-gardNIC0: enp129s0f0
-goracleNIC0: enp129s0f0
-#goracleNIC1: enp129s0f0
-#zoneNIC1: enp129s0f0
-zoneNIC0: enp129s0f0np0
-gardNIC1: enp129s0f1
 
 ## testbedSpringfield NIC configuration
 bartNIC0: enp4s0
