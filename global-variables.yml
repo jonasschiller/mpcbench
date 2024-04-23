@@ -75,26 +75,26 @@ yieldlyNIC2: ens2f1
 #yieldlyNIC2: ens4f0
 
 # # NEW TOPOLOGY
-# algofiNIC0: enp195s0f1    # To Gard
-# algofiNIC1: enp195s0f0    # To Goracle
-# algofiNIC2: enp193s0f1    # To Zone
-# gardNIC2: enp195s0f1      # To Algofi
-# gardNIC0: enp193s0f1      # To Goracle
-# gardNIC1: enp195s0f0      # To Zone
-# goracleNIC1: enp195s0f1   # To Algofi
-# goracleNIC2: enp193s0f1   # To Gard
-# goracleNIC0: enp195s0f0   # To Zone
-# zoneNIC0: enp193s0f1      # To Algofi
-# zoneNIC1: enp195s0f0      # To Gard
-# zoneNIC2: enp195s0f1      # To Goracle
-
-#Three Part Setup
 algofiNIC0: enp195s0f1    # To Gard
 algofiNIC1: enp195s0f0    # To Goracle
-gardNIC1: enp195s0f1      # To Algofi
+algofiNIC2: enp193s0f1    # To Zone
+gardNIC2: enp195s0f1      # To Algofi
 gardNIC0: enp193s0f1      # To Goracle
-goracleNIC0: enp195s0f1   # To Algofi
-goracleNIC1: enp193s0f1   # To Gard
+gardNIC1: enp195s0f0      # To Zone
+goracleNIC1: enp195s0f1   # To Algofi
+goracleNIC2: enp193s0f1   # To Gard
+goracleNIC0: enp195s0f0   # To Zone
+zoneNIC0: enp193s0f1      # To Algofi
+zoneNIC1: enp195s0f0      # To Gard
+zoneNIC2: enp195s0f1      # To Goracle
+
+#Three Part Setup
+# algofiNIC0: enp195s0f1    # To Gard
+# algofiNIC1: enp195s0f0    # To Goracle
+# gardNIC1: enp195s0f1      # To Algofi
+# gardNIC0: enp193s0f1      # To Goracle
+# goracleNIC0: enp195s0f1   # To Algofi
+# goracleNIC1: enp193s0f1   # To Gard
 
 ## testbedSpringfield NIC configuration
 bartNIC0: enp4s0
