@@ -50,6 +50,44 @@ help() {
     echo " -l, --latency        latency of network in ms, with <Values>"
     echo " -b, --bandwidth      bandwidth of network in MBit/s, with <Values>"
     echo " -d, --packetdrop     packet drop/loss in network in %, with <Values>"
+    echo "     --manipulate     specify custom links to manipulate, instead of all links (=\"66...\"),"
+    echo "                      by defining a code for each node to manipulate only a subset of the links."
+    echo "                      For 4 nodes, there are 6 links, each link having 2 endings. In sum there"
+    echo "                      are 12 endings that can be manipulated, giving 2^12 = 4096 total constellations"
+    echo "                      Note that only Tx direction can be manipulated, to limit the entire link, both"
+    echo "                      ends need to be activated for manipulation."
+    echo "                      The codes 0,1,...,6 define which of the three links to manipulate, where"
+    echo "                      0 -> only NIC0;    1 -> only NIC1;    2 -> only NIC2;    7 -> none"
+    echo "                      3 -> NIC0 && NIC1; 4 -> NIC0 && NIC2; 5 -> NIC1 && NIC2; 6 -> all"
+    echo "                      where NIC0 always connects to the next node alphabetically in sequence"
+    echo "                      and NIC1 to the second and NIC3 to the third in sequence"
+    echo "                      Notice: nodes constellation must be circularly sorted (should be anyway)"
+    echo "                      Notice: NICs must be connected alphabetically in sequence (see readme)"
+    echo "                      Examples for \"--node node2,node3,node4,node1\":"
+    echo "                      1234 activats Tx manipulations on"
+    echo "                          node2 -> NIC1 -> node4"
+    echo "                          node3 -> NIC2 -> node2"
+    echo "                          node4 -> NIC0 && NIC1 -> node1 && node2"
+    echo "                          node1 -> NIC0 && NIC2 -> node2 && node4"
+    echo "                      0000 activats Tx manipulations on"
+    echo "                          node2 -> NIC0 -> node3"
+    echo "                          node3 -> NIC0 -> node4"
+    echo "                          node4 -> NIC0 -> node1"
+    echo "                          node1 -> NIC0 -> node2"
+    echo "                      2567 activats Tx manipulations on"
+    echo "                          node2 -> NIC2 -> node1"
+    echo "                          node3 -> NIC1 && NIC2 -> node2"
+    echo "                          node4 -> all -> node1 && node2 && node3"
+    echo "                          node1 -> none"
+    echo "                      7777 (useless, no links are manipulated, equivalent to no manipulation options)"
+    echo "                      6666 (default, all links are manipulated)"
+    echo "                      To limit only the link between node3 and node4 in both directions to"
+    echo "                      simulate a low bandwidth bottleneck: 7027"
+    echo "                      7027 activats Tx manipulations on"
+    echo "                          node2 -> none"
+    echo "                          node3 -> NIC0 -> node4"
+    echo "                          node4 -> NIC2 -> node3"
+    echo "                          node1 -> none"
 	echo -e "\nAvailable experiments:\n"
 	ls experiments
 	echo -e "\nAvailable NODES:\n"
@@ -289,7 +327,6 @@ setParameters() {
     # node already in use check
     #nodetasks=$(pgrep -facu "$(id -u)" "${NODES[0]}")
     #[ "$nodetasks" -gt 10 ] && error $LINENO "${FUNCNAME[0]}(): it appears host ${NODES[0]} is currently in use"
-
      # generate loop-variables.yml (append random num to mitigate conflicts)
     loopvarpath="experiments/loop-variables-$NETWORK.yml"
     rm -f "$loopvarpath"
@@ -398,10 +435,12 @@ setParameters() {
             echo "    Program flags: $progflags"
             echo "    Run flags: $runflags"
             echo "    Testtypes:"
+            
             for type in "${TTYPES[@]}"; do
                 declare -n ttypes="${type}"
                 echo -e "      $type\t= ${ttypes[*]}"
             done
+            [ "$manipulate" != "6666" ] && echo "    manipulate: $manipulate"
             echo "  Summary file = $SUMMARYFILE"
         } | tee "$SUMMARYFILE"
 
@@ -419,6 +458,7 @@ setParameters() {
             declare -n ttypes="${type}"
             echo -e "      $type\t= ${ttypes[*]}"
         done
+        [ "$manipulate" != "6666" ] && echo "    manipulate: $manipulate"
         echo "  Summary file = $SUMMARYFILE"
         } | tee "$SUMMARYFILE"
     elif [ "$FRAMEWORK" == "motion" ]; then
@@ -450,6 +490,7 @@ setParameters() {
             declare -n ttypes="${type}"
             echo -e "      $type\t= ${ttypes[*]}"
         done
+        [ "$manipulate" != "6666" ] && echo "    manipulate: $manipulate"
         echo "  Summary file = $SUMMARYFILE"
         } | tee "$SUMMARYFILE"
     elif [ "$FRAMEWORK" == "hpmpc" ]; then

@@ -50,6 +50,11 @@ setQuota() {
 
 
 setNetworkParameters() {
+    nodenumber=$((player+1))
+    nodemanipulate="${manipulate:nodenumber:1}"
+
+    # skip when code 7 -> do not manipulate any link
+    [ "$nodemanipulate" -eq 7 ] && return 0
     partysize=$1
     latency=$(pos_get_variable latencies --from-loop) || latency=0
     bandwidth=$(pos_get_variable bandwidths --from-loop) || bandwidth=-1
@@ -59,16 +64,30 @@ setNetworkParameters() {
     NIC1=$(pos_get_variable "$(hostname)"NIC1 --from-global) || NIC1=0
     NIC2=$(pos_get_variable "$(hostname)"NIC2 --from-global) || NIC2=0
 
-if [ "$bandwidth" -eq -1 ]; then
+if [ "$partysize" -eq 3 ]; then
     # Set only latency and packet drop
-    tc qdisc add dev "$NIC0" root netem delay "$latency"ms loss "$packetdrop"%
-    [ "$NIC1" != 0 ] && tc qdisc add dev "$NIC1" root netem delay "$latency"ms loss "$packetdrop"%
-    [ "$NIC2" != 0 ] && [ "$partysize" == 4 ] && tc qdisc add dev "$NIC2" root netem delay "$latency"ms loss "$packetdrop"%
-else
+    if [ "$bandwidth" -eq -1 ]; then
+    # Set only latency and packet drop
+    [ "$nodemanipulate" -ne 1 ] && tc qdisc add dev "$NIC0" root netem delay "$latency"ms loss "$packetdrop"%
+    [ "$NIC1" != 0 ] && [ "$nodemanipulate" -ne 0 ] && tc qdisc add dev "$NIC1" root netem delay "$latency"ms loss "$packetdrop"%
+    else
     # Set all parameters
-    tc qdisc add dev "$NIC0" root netem rate "$bandwidth"mbit loss "$packetdrop"% delay "$latency"ms
-    [ "$NIC1" != 0 ] && tc qdisc add dev "$NIC1" root netem rate "$bandwidth"mbit loss "$packetdrop"% delay "$latency"ms
-    [ "$NIC2" != 0 ] && [ "$partysize" == 4 ] && tc qdisc add dev "$NIC2" root netem rate "$bandwidth"mbit loss "$packetdrop"% delay "$latency"ms
+    [ "$nodemanipulate" -ne 1 ] && tc qdisc add dev "$NIC0" root netem rate "$bandwidth"mbit loss "$packetdrop"% delay "$latency"ms
+    [ "$NIC1" != 0 ] && [ "$nodemanipulate" -ne 0 ] && tc qdisc add dev "$NIC1" root netem rate "$bandwidth"mbit loss "$packetdrop"% delay "$latency"ms
+    fi   
+fi
+if ["$partysize" -eq 4]; then
+    NIC0codes=( 0 3 4 6 )
+    NIC1codes=( 1 3 5 6 )
+    NIC2codes=( 2 4 5 6 )
+    [[ ${NIC0codes[*]} =~ $nodemanipulate ]] && tc qdisc add dev "$NIC0" root netem delay "$latency"ms loss "$packetdrop"%
+    [ "$NIC1" != 0 ] && [[ ${NIC1codes[*]} =~ ${nodemanipulate} ]] && tc qdisc add dev "$NIC1" root netem delay "$latency"ms loss "$packetdrop"%
+    [ "$NIC2" != 0 ] && [[ ${NIC2codes[*]} =~ ${nodemanipulate} ]] && tc qdisc add dev "$NIC2" root netem delay "$latency"ms loss "$packetdrop"%
+    else
+    # Set all parameters
+    [[ ${NIC0codes[*]} =~ $nodemanipulate ]] && tc qdisc add dev "$NIC0" root netem rate "$bandwidth"mbit loss "$packetdrop"% delay "$latency"ms
+    [ "$NIC1" != 0 ] && [[ ${NIC1codes[*]} =~ ${nodemanipulate} ]] && tc qdisc add dev "$NIC1" root netem rate "$bandwidth"mbit loss "$packetdrop"% delay "$latency"ms
+    [ "$NIC2" != 0 ] && [[ ${NIC2codes[*]} =~ ${nodemanipulate} ]] && tc qdisc add dev "$NIC2" root netem rate "$bandwidth"mbit loss "$packetdrop"% delay "$latency"ms
 fi
 return 0
 }
