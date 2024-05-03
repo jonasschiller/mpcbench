@@ -54,29 +54,8 @@ case " ${types[*]} " in
         setQuota;;&
     *" FREQS "*)
         setFrequency;;&
-    *" BANDWIDTHS "*)
-        # check whether to manipulate a combination
-        case " ${types[*]} " in
-            *" LATENCIES "*)
-            case " ${types[*]} " in
-                *" PACKETDROPS "*)
-                    setAllParameters "$partysize";;
-                *)
-                setLatencyBandwidth;;
-            esac;;                 
-            *" PACKETDROPS "*) # a.k.a. packet loss
-                setBandwidthPacketdrop;;
-            *)
-                limitBandwidth;;
-        esac;;
-    *" LATENCIES "*)
-        if [[ " ${types[*]} " == *" PACKETDROPS "* ]]; then
-            setPacketdropLatency
-        else
-            setLatency
-        fi;;
-    *" PACKETDROPS "*)
-        setPacketdrop;;
+    *" BANDWIDTHS "*|*" LATENCIES "*|*" PACKETDROPS "*)
+        setNetworkParameters "$partysize";;&
 esac
 
 ####
