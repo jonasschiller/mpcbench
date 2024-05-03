@@ -46,10 +46,15 @@ installDriver() {
 # not via a switch, we need to create individual networks for each
 # NIC pair and route the network through the correct NIC
 # this is not an ideal situation for big party numbers
+if [ "$groupsize" -eq 3 ] && [ (hostname | grep -cE "idex|meld|tinyman|yieldly|algofi|gard|goracle|zone") ]; then
+	nic0=$(pos_get_variable "$(hostname)"NIC0_3node --from-global)
+	nic1=$(pos_get_variable "$(hostname)"NIC1_3node --from-global) || nic1=0
+else
+	nic0=$(pos_get_variable "$(hostname)"NIC0 --from-global)
+	nic1=$(pos_get_variable "$(hostname)"NIC1 --from-global) || nic1=0
+	nic2=$(pos_get_variable "$(hostname)"NIC2 --from-global) || nic2=0
+fi
 
-nic0=$(pos_get_variable "$(hostname)"NIC0 --from-global)
-nic1=$(pos_get_variable "$(hostname)"NIC1 --from-global) || nic1=0
-nic2=$(pos_get_variable "$(hostname)"NIC2 --from-global) || nic2=0
 
 ips=()
 

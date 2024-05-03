@@ -43,36 +43,31 @@ tapaNIC0: enp130s0f0
 valgaNIC1: ens5f1
 valgaNIC0: ens5f0
 raplaNIC1: enp130s0f0
-
+## For the 25 GB test bed you can either use idex,meld,tinyman in a three nodes setup or all four
+## FOr the AMD nodes you can use algofi, gard, goracle in a three node setup or all four
 ## testbedCoinbase NIC configuration
 # 25G
 # Intel Nodes
 # NEW TOPOLOGY
-idexNIC0: ens2f1
-idexNIC1: ens4f1
-idexNIC2: ens4f0
+idexNIC0_3node: ens4f0
+idexNIC1_3node: ens2f1
+meldNIC0_3node: ens4f0
+meldNIC1_3node: ens4f1
+tinymanNIC0_3node: ens2f1
+tinymanNIC1_3node: ens4f0
+
+idexNIC0: ens4f0
+idexNIC1: ens2f1
+idexNIC2: ens4f1
 meldNIC0: ens4f0
 meldNIC1: ens2f1
 meldNIC2: ens4f1
 tinymanNIC0: ens4f0
-tinymanNIC1: ens4f1
+tinymanNIC1: ens2f1
 tinymanNIC2: ens4f1
-yieldlyNIC0: ens2f1
-yieldlyNIC1: ens4f0
-yieldlyNIC2: ens2f1
-
-#idexNIC0: ens4f0
-#idexNIC1: ens2f1
-#idexNIC2: ens4f1
-#meldNIC0: ens4f0
-#meldNIC1: ens2f1
-#meldNIC2: ens4f1
-#tinymanNIC0: ens4f0
-#tinymanNIC1: ens2f1
-#tinymanNIC2: ens4f1
-#yieldlyNIC0: ens4f1
-#yieldlyNIC1: ens2f1
-#yieldlyNIC2: ens4f0
+yieldlyNIC0: ens4f1
+yieldlyNIC1: ens2f1
+yieldlyNIC2: ens4f0
 
 # # NEW TOPOLOGY
 algofiNIC0: enp195s0f1    # To Gard
@@ -89,12 +84,12 @@ zoneNIC1: enp195s0f0      # To Gard
 zoneNIC2: enp195s0f1      # To Goracle
 
 #Three Part Setup
-# algofiNIC0: enp195s0f1    # To Gard
-# algofiNIC1: enp195s0f0    # To Goracle
-# gardNIC1: enp195s0f1      # To Algofi
-# gardNIC0: enp193s0f1      # To Goracle
-# goracleNIC0: enp195s0f1   # To Algofi
-# goracleNIC1: enp193s0f1   # To Gard
+algofiNIC0_3node: enp195s0f1    # To Gard
+algofiNIC1_3node: enp195s0f0    # To Goracle
+gardNIC1_3node: enp195s0f1      # To Algofi
+gardNIC0_3node: enp193s0f1      # To Goracle
+goracleNIC0_3node: enp195s0f1   # To Algofi
+goracleNIC1_3node: enp193s0f1   # To Gard
 
 ## testbedSpringfield NIC configuration
 bartNIC0: enp4s0
