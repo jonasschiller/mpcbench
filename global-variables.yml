@@ -54,7 +54,7 @@ idexNIC1_3node: ens2f1
 meldNIC0_3node: ens4f0
 meldNIC1_3node: ens4f1
 tinymanNIC0_3node: ens2f1
-tinymanNIC1_3node: ens4f0
+tinymanNIC1_3node: ens4f1
 
 idexNIC0: ens4f0
 idexNIC1: ens2f1
