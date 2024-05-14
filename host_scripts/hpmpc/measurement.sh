@@ -95,7 +95,7 @@ echo -e "\n========\n" >> testresults
 #  environment manipulation section start
 ####
 # shellcheck source=../host_scripts/manipulate.sh
-source "$REPO2_DIR"/host_scripts/hpmpc/manipulate.sh
+source "$REPO2_DIR"/host_scripts/manipulate.sh
 
 if [[ "${types[*]}" == *" LATENCY=0 "* ]]; then
     types=("${types[@]/LATENCY}")
